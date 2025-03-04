@@ -12,11 +12,12 @@ public class TimeBlockRepository : ITimeBlockRespository
 
     public async Task<IEnumerable<TimeBlock>> GetAllTimeBlocks(int UserId)
     {
-        return await Context.Timeblocks.Where(i => i.UserId == UserId).ToListAsync();
+        return await Context.Timeblocks.Where(t => t.UserId == UserId).ToListAsync();
     }
 
     public async Task AddTimeBlock(TimeBlock item)
     {
+        Console.WriteLine(item.UserId);
         await Context.Timeblocks.AddAsync(item);
         await Context.SaveChangesAsync();
     }

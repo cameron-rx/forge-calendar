@@ -4,10 +4,16 @@ public static class TimeBlockEndpoints
     {
         var group = app.MapGroup("/timeblock");
 
-        group.MapPost("/", async (TimeBlockRequestDTO timeblock, ITimeBlockService timeBlockService) =>
+        group.MapPost("/", async (TimeBlockRequestDTO requestTimeblock, ITimeBlockService timeBlockService) =>
         {
-            var item = await timeBlockService.Create(timeblock,1);
-            return Results.Created($"/timeblock/{item.Id}", item);
+            var timeblock = await timeBlockService.Create(requestTimeblock, 1);
+            return Results.Created($"/timeblock/{timeblock.Id}", timeblock);
+        });
+
+        group.MapGet("/", async (ITimeBlockService  timeBlockService) =>
+        {
+            var timeblocks = await timeBlockService.GetAll(1);
+            return Results.Json(timeblocks);
         });
     }
 }

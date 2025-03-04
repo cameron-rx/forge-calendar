@@ -8,3 +8,16 @@ Content-Type: application/json
     "EndTime": "2025-03-01T15:00:00.000Z"
 }
 ###
+
+POST http://localhost:5243/timeblock
+Content-Type: application/json
+
+{
+    "Name": "Gym",
+    "Location": "Sheffield",
+    "StartTime": "2025-03-01T09:00:00.000Z",
+    "EndTime": "2025-03-01T11:00:00.000Z"
+}
+
+###
+GET http://localhost:5243/timeblock
