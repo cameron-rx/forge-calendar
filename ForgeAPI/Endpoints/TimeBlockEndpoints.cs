@@ -15,5 +15,11 @@ public static class TimeBlockEndpoints
             var timeblocks = await timeBlockService.GetAll(1);
             return Results.Json(timeblocks);
         });
+
+        group.MapDelete("/{id}", async (int id, ITimeBlockService timeBlockService) =>
+        {
+            await timeBlockService.Delete(1, id);
+            return Results.NoContent();
+        });
     }
 }

@@ -18,6 +18,8 @@ Content-Type: application/json
     "StartTime": "2025-03-01T09:00:00.000Z",
     "EndTime": "2025-03-01T11:00:00.000Z"
 }
+###
 
+DELETE http://localhost:5243/timeblock/1 
 ###
 GET http://localhost:5243/timeblock

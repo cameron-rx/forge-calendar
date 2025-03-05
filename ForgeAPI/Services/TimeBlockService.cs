@@ -1,3 +1,6 @@
+using System.ComponentModel;
+using System.Diagnostics;
+
 public class TimeBlockService : ITimeBlockService 
 {
     private readonly ITimeBlockRespository timeBlockRespository;
@@ -19,5 +22,10 @@ public class TimeBlockService : ITimeBlockService
         var timeblocks = await timeBlockRespository.GetAllTimeBlocks(userId);
         List<TimeBlockResponseDTO> DTOs =  timeblocks.Select(t => new TimeBlockResponseDTO { Id = t.Id, Name = t.Name, Location = t.Location, StartTime = t.StartTime, EndTime = t.EndTime }).ToList();
         return DTOs;
+    }
+
+    public async Task Delete(int userId, int timeblockId)
+    {
+        await timeBlockRespository.RemoveTimeBlock(timeblockId);
     }
 }
