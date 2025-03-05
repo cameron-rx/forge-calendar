@@ -19,7 +19,14 @@ Content-Type: application/json
     "EndTime": "2025-03-01T11:00:00.000Z"
 }
 ###
+PATCH http://localhost:5243/timeblock/1
+Content-Type: application/json
 
-DELETE http://localhost:5243/timeblock/1 
+{
+    "Name": "Running"
+}
+###
+
+DELETE http://localhost:5243/timeblock/4
 ###
 GET http://localhost:5243/timeblock

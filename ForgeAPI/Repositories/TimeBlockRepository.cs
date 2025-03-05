@@ -31,15 +31,23 @@ public class TimeBlockRepository : ITimeBlockRespository
         Context.Timeblocks.Remove(item);
         await Context.SaveChangesAsync();
     }
-    public async Task UpdateTimeBlock(TimeBlock newItem, int oldItemId)
+    public async Task<TimeBlock> UpdateTimeBlock(int oldItemId, TimeBlock newItem)
     {
-        var oldItem = await Get(oldItemId);
-        oldItem.Name = newItem.Name;
-        oldItem.Location = newItem.Location;
-        oldItem.StartTime = newItem.StartTime;
-        oldItem.EndTime = newItem.EndTime;
+        var timeblock = await Get(oldItemId);
+        timeblock.Name = newItem.Name == "" ? timeblock.Name : newItem.Name;
+        timeblock.Location = newItem.Location == "" ? timeblock.Location : newItem.Location;
+        timeblock.StartTime = newItem.StartTime == default(DateTime) ? timeblock.StartTime : newItem.StartTime ;
+        timeblock.EndTime = newItem.EndTime == default(DateTime) ? timeblock.StartTime : newItem.StartTime;
 
         await Context.SaveChangesAsync();
+
+        return timeblock;
+
+    }
+
+    public async Task<bool> Exists(int timeblockId)
+    {
+       return  await Context.Timeblocks.AnyAsync(t => t.Id == timeblockId);
     }
 }
 

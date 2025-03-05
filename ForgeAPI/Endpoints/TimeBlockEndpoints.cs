@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Mvc.Filters;
+
 public static class TimeBlockEndpoints
 {
     public static void MapTimeBlockEndpoints(this WebApplication app)
@@ -20,6 +22,19 @@ public static class TimeBlockEndpoints
         {
             await timeBlockService.Delete(1, id);
             return Results.NoContent();
+        });
+
+        group.MapPatch("/{id}", async (int id, TimeBlockRequestDTO requestTimeblock, ITimeBlockService timeBlockService) =>
+        {
+            try
+            {
+               var patchedTimeBlock = await timeBlockService.Update(id,requestTimeblock);
+               return Results.Ok(patchedTimeBlock);
+            }
+            catch (System.Exception exception)
+            {
+                return Results.NotFound(exception.Message);
+            }
         });
     }
 }

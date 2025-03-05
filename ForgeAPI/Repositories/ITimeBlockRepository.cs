@@ -4,5 +4,6 @@ public interface ITimeBlockRespository
     Task<TimeBlock?> Get(int timeblockId);
     Task AddTimeBlock(TimeBlock item);
     Task RemoveTimeBlock(int Id);
-    Task UpdateTimeBlock(TimeBlock newItem, int oldItemId);
+    Task<TimeBlock> UpdateTimeBlock(int oldItemId, TimeBlock newItem);
+    Task<bool> Exists(int timeblockId);
 }
