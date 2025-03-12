@@ -14,7 +14,14 @@ function App() {
             <Separator orientation="vertical" className="mr-2 h-4" />
           </header>
           <div id="calendarContainer" className="w-full h-dvh flex flex-row justify-evenly">
-             
+            {[...Array(6)].map(() => 
+              <div className="border w-full border-gray-50 border-solid">
+                {[...Array(23).keys()].map((_,i) =>
+                <div className="relative w-full border" style={{ top: (((i+1)/24) * 100) + "%" }}></div>
+                )}
+              </div>
+
+            )} 
           </div>
         </SidebarInset>
       </SidebarProvider>
