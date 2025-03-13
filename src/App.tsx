@@ -1,6 +1,7 @@
 import { Separator } from "@radix-ui/react-separator"
 import { AppSidebar } from "./components/app-sidebar"
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "./components/ui/sidebar"
+import CalendarContainer from "./components/calendar-container"
 
 function App() {
 
@@ -13,16 +14,7 @@ function App() {
             <SidebarTrigger className="-ml-1" />
             <Separator orientation="vertical" className="mr-2 h-4" />
           </header>
-          <div id="calendarContainer" className="w-full h-dvh flex flex-row justify-evenly">
-            {[...Array(6)].map(() => 
-              <div className="border w-full border-gray-50 border-solid">
-                {[...Array(23).keys()].map((_,i) =>
-                <div className="relative w-full border" style={{ top: (((i+1)/24) * 100) + "%" }}></div>
-                )}
-              </div>
-
-            )} 
-          </div>
+            <CalendarContainer />
         </SidebarInset>
       </SidebarProvider>
     </>
