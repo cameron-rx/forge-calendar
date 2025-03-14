@@ -1,8 +1,8 @@
 import * as React from "react"
 import { Plus } from "lucide-react"
 
-import { DatePicker } from "@/components/date-picker"
-import { NavUser } from "@/components/nav-user"
+import { DatePicker } from "@/components/side-bar/date-picker"
+import { NavUser } from "@/components/side-bar/nav-user"
 import {
   Sidebar,
   SidebarContent,

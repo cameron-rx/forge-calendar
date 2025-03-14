@@ -1,9 +1,9 @@
 import { Separator } from "@radix-ui/react-separator"
-import { AppSidebar } from "./components/app-sidebar"
+import { AppSidebar } from "./components/side-bar/app-sidebar"
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "./components/ui/sidebar"
 import CalendarContainer from "./components/calendar-view/calendar-container"
 import { useState } from "react"
-import { ButtonArrow } from "./components/calendar-view/button-arrow"
+import { ButtonArrow } from "./components/ui/button-arrow"
 
 function App() {
   let [currentDay, setCurrentDay] = useState(new Date(Date.now()))
