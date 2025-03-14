@@ -20,7 +20,7 @@ export default function CalendarContainer() {
                 </div>
                 {daysOfWeek.map((day) =>
                     <div className="w-full">
-                        <DayHeader day={day} />
+                        <DayHeader day={day} date={0}/>
                         <div className="border h-19/20  border-gray-50 border-solid">
                             <DayContainer></DayContainer>
                         </div>

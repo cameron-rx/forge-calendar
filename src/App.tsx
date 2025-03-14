@@ -1,9 +1,9 @@
 import { Separator } from "@radix-ui/react-separator"
 import { AppSidebar } from "./components/app-sidebar"
 import { SidebarProvider, SidebarInset, SidebarTrigger } from "./components/ui/sidebar"
-import CalendarContainer from "./components/calendar-container"
+import CalendarContainer from "./components/calendar-view/calendar-container"
 import { useState } from "react"
-import { ButtonArrow } from "./components/button-arrow"
+import { ButtonArrow } from "./components/calendar-view/button-arrow"
 
 function App() {
   let [currentDay, setCurrentDay] = useState(new Date(Date.now()))
@@ -12,14 +12,14 @@ function App() {
     let dayOfWeek = currentDay.getDay();
     let startOfWeek = new Date(currentDay);
     startOfWeek.setDate(currentDay.getDate() - dayOfWeek)
-    return startOfWeek.toLocaleDateString();
+    return startOfWeek;
   }
 
   function getEndOfWeek() {
     let dayOfWeek = currentDay.getDay();
     let endOfWeek = new Date(currentDay);
     endOfWeek.setDate((6-dayOfWeek) + currentDay.getDate())
-    return endOfWeek.toLocaleDateString();
+    return endOfWeek;
   }
 
 
@@ -33,7 +33,7 @@ function App() {
             <Separator orientation="vertical" className="mr-2 h-4" />
             <div id="WeekSelector" className="flex justify-center align-middle justify-self-center ml-auto mr-auto">
               <ButtonArrow direction="left"/>
-              <h1 className="text-center m-auto">{getStartOfWeek()} - {getEndOfWeek()}</h1>
+              <h1 className="text-center m-auto">{getStartOfWeek().toLocaleDateString()} - {getEndOfWeek().toLocaleDateString()}</h1>
               <ButtonArrow direction="right"/>
             </div>
           </header>
