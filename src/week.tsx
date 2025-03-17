@@ -3,9 +3,11 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from "./components/ui/s
 import CalendarContainer from "./components/calendar-view/calendar-container"
 import { ButtonArrow } from "./components/calendar-view/button-arrow"
 import { Separator } from "./components/ui/separator"
-import { getEndOfWeek, getStartOfWeek } from "./lib/utils"
+import { getDateFromURLParams, getStartOfWeek } from "./lib/utils"
 
 export default function Week() {
+  let currentDate = getStartOfWeek();
+  let headerString = currentDate.toLocaleDateString("en-US", {month: "short", year: 'numeric'})
 
   return (
     <>
@@ -17,7 +19,7 @@ export default function Week() {
             <Separator orientation="vertical" className="mr-2 h-4" />
             <div id="WeekSelector" className="flex justify-center align-middle justify-self-center ml-auto mr-auto">
               <ButtonArrow direction="left" offset={-7}/>
-              <h1 className="text-center m-auto">{getStartOfWeek().toLocaleDateString()} - {getEndOfWeek().toLocaleDateString()}</h1>
+              <h1 className="text-center m-auto">{headerString}</h1>
               <ButtonArrow direction="right" offset={+7}/>
             </div>
           </header>
