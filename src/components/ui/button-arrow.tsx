@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button"
 
 interface props {
     direction: string
+    onclick: () => void
 }
 
 

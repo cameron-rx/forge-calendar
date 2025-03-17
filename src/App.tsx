@@ -1,4 +1,4 @@
-import { Navigate, replace, Route} from "react-router";
+import { Navigate, Route} from "react-router";
 import { Routes } from "react-router";
 import Week from "./week";
 
@@ -12,7 +12,7 @@ function App() {
 
     return (
     <>
-    <Navigate to={`/week/${year}/${month}/${day}`} replace/>
+    <Navigate to={`/week/${year}/${month}/${day}`}/>
     </>
     )
   }
