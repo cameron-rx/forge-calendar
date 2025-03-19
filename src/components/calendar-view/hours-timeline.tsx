@@ -6,7 +6,7 @@ export default function HoursTimeline() {
     return (
         <div className="block relative w-max top-1/20 min-h-19/20 min-w-[4rem]">
             {hours.map((hour, i) =>
-                <div className="absolute inline left-1/5" style={{ top: `calc(${(i / 24) * 100 + "%"} - 1em)` }}>
+                <div className="absolute inline left-1/5" style={{ top: `calc(${(i / 25) * 100 + "%"} - 1em)` }}>
                     {hour}
                 </div>
             )}
