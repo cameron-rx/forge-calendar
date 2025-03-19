@@ -9,7 +9,8 @@ export default function WeekContainer() {
     let weekStart = getStartOfWeek()
     let startTime = new Date(Date.now())
     let endTime = new Date(startTime)
-    endTime.setHours(endTime.getHours() + 2)
+    endTime.setHours(endTime.getHours() + 5)
+    endTime.setMinutes(endTime.getMinutes() + - 15)
 
     function getDate() {
         const returnDate = weekStart.getDate()
