@@ -1,25 +1,49 @@
+import { useEffect, useRef, useState } from "react"
+
 interface props {
     name: string
     startTime: Date
     endTime: Date
+    containers: React.RefObject<(HTMLDivElement | null)[]>
+    index: number
 }
 
-export default function CalendarBlock({name, startTime, endTime}:props) {
-    const startMinutes = 0//startTime.getMinutes()
-    const startHours = 0//startTime.getHours();
+export default function CalendarBlock({name, startTime, endTime, containers, index}:props) {
+    // TODO: Change function to take reference to parent 
+    // Get parents location and height
+    // Use in calculations for translating and setting height/width
+    // Original block will be not display
+    
 
-    const endMinutes = endTime.getMinutes()
-    const endHours = endTime.getHours();
+    let [position, setPosition] = useState({transform: "translate(0px, 0px)", height: "0px", width: "0px"});
+
+    const startMinutes = 30//startTime.getMinutes()
+    const startHours = 2//startTime.getHours();
+
+    const endMinutes = 15
+    const endHours = 5
     
     const hourDiff = endHours - startHours
     const minuteDiff = endMinutes - startMinutes
 
-    const topValue = ((startHours/24) + (startMinutes/(24*60))) * 100
-    const heightValue = ((hourDiff/24) + (minuteDiff/(24*60))) * 100
+    useEffect(() => {
+        if (containers.current[index] != null) {
+            let heightPerHour = containers.current[index].offsetHeight / 24
+
+            let top = containers.current[index].offsetTop + (heightPerHour * startHours) + (startMinutes * (heightPerHour/60))
+            let left = containers.current[index].offsetLeft
+
+            let height = (hourDiff * heightPerHour) + (minuteDiff * (heightPerHour/60))
+            let width = containers.current[index].offsetWidth
+
+            setPosition({transform: `translate(${left}px, ${top}px)`, height: `${height}px`, width: `${width}px`})
+        }
+    }, [containers.current[index]])
+
 
     return (
-        <div className=" absolute w-full bg-amber-600" style={{ top: topValue + "%", height: heightValue + "%"}}>
-            <h1>{name}</h1>
+        <div className="z-10 absolute bg-blue-300 top-0 left-0" style={position}>
+            <h1 className="p-2 text-xl">{name}</h1>
         </div>
     )
 }
