@@ -9,19 +9,13 @@ interface props {
 }
 
 export default function CalendarBlock({name, startTime, endTime, containers, index}:props) {
-    // TODO: Change function to take reference to parent 
-    // Get parents location and height
-    // Use in calculations for translating and setting height/width
-    // Original block will be not display
-    
-
     let [position, setPosition] = useState({transform: "translate(0px, 0px)", height: "0px", width: "0px"});
 
-    const startMinutes = 30//startTime.getMinutes()
-    const startHours = 2//startTime.getHours();
+    const startHours = startTime.getHours();
+    const startMinutes = startTime.getMinutes()
 
-    const endMinutes = 15
-    const endHours = 5
+    const endHours = endTime.getHours()
+    const endMinutes = endTime.getMinutes();
     
     const hourDiff = endHours - startHours
     const minuteDiff = endMinutes - startMinutes
