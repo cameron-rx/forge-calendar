@@ -3,11 +3,19 @@ import { SidebarProvider, SidebarInset, SidebarTrigger } from "./components/ui/s
 import CalendarContainer from "./components/calendar-view/calendar-container"
 import { ButtonArrow } from "./components/calendar-view/button-arrow"
 import { Separator } from "./components/ui/separator"
-import { getDateFromURLParams, getStartOfWeek } from "./lib/utils"
+import { getDateFromURLParams, getEndOfWeek, getStartOfWeek } from "./lib/utils"
 
 export default function Week() {
   let currentDate = getStartOfWeek();
-  let headerString = currentDate.toLocaleDateString("en-US", {month: "short", year: 'numeric'})
+  let endDate = getEndOfWeek();
+  let headerString = "";
+  if (currentDate.getMonth() != endDate.getMonth()) {
+    let firstMonth = currentDate.toLocaleDateString("en-US", {month: "short"})
+    let secondMonth = endDate.toLocaleDateString("en-US", {month: "short", year: "numeric"})
+    headerString = firstMonth + "-" + secondMonth
+  } else {
+    headerString = currentDate.toLocaleDateString("en-US", {month: "short", year: 'numeric'})
+  }
 
   return (
     <>

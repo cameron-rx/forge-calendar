@@ -12,10 +12,10 @@ type Timeblock = {
     endTime: Date
 }
 
+// TODO: Will have to add offset to utc dates in order to convert them to users local time for filtering and displaying
 export default function WeekContainer() {
     const containers = useRef<(HTMLDivElement | null)[]>([]);
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-    // Create array for dates of week and pass to day container the given date
     let weekStart = getStartOfWeek()
     let dayHeaderDate = new Date(weekStart)
     let weekStartUTC = Date.UTC(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate())
