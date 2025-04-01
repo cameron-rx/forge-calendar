@@ -14,6 +14,7 @@ import {
   SidebarRail,
   SidebarSeparator,
 } from "@/components/ui/sidebar"
+import CreateTimeblockButton from "./create-timeblock-button"
 
 // This is sample data.
 const data = {
@@ -47,6 +48,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <DatePicker />
         <SidebarSeparator className="mx-0" />
+        <CreateTimeblockButton />
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>

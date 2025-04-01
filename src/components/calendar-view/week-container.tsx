@@ -39,7 +39,8 @@ export default function WeekContainer() {
     const timeblocks: Timeblock[] = [
         {id: 1,name: "Help Sam",location: "IC",startTime:  new Date(2025,2,23,15),endTime: new Date(2025,2,23,18)},
         {id: 2,name: "Swim",location: "Pond's Forge",startTime:  new Date(2025,2,26,10),endTime: new Date(2025,2,26,14)},
-        {id: 3,name: "Test 1",location: "Pond's Forge",startTime:  new Date(2025,2,29,6),endTime: new Date(2025,2,29,10)}
+        {id: 3,name: "Test 1",location: "Pond's Forge",startTime:  new Date(2025,2,29,6),endTime: new Date(2025,2,29,10)},
+        {id: 4,name: "April Fools",location: "Everywhere",startTime:  new Date(2025,3,1,0),endTime: new Date(2025,3,1,23,59)}
     ]
 
     const thisWeekBlocks = timeblocks.filter((t) => {

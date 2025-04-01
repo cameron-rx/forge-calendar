@@ -6,9 +6,13 @@ import { Separator } from "./components/ui/separator"
 import { getDateFromURLParams, getEndOfWeek, getStartOfWeek } from "./lib/utils"
 
 export default function Week() {
+
+  // Used to render the current month at top of week
+  // Checks to see if week spans two months and displays both if so
   let currentDate = getStartOfWeek();
   let endDate = getEndOfWeek();
   let headerString = "";
+
   if (currentDate.getMonth() != endDate.getMonth()) {
     let firstMonth = currentDate.toLocaleDateString("en-US", {month: "short"})
     let secondMonth = endDate.toLocaleDateString("en-US", {month: "short", year: "numeric"})
