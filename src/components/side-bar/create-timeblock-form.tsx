@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -19,6 +18,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { cn } from "@/lib/utils"
 import { Calendar } from "../ui/calendar"
 import { CalendarIcon } from "lucide-react"
+import { useMutation } from "@tanstack/react-query"
+import { createTimeblock } from "../calendar-view/api"
 
 const formSchema = z.object({
   name: z.string().min(1).max(50),
@@ -46,6 +47,8 @@ export default function TestForm() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
+    const startDate = new Date(values.date.getFullYear(), values.date.getMonth(), values.date.getDay(), values.startHour, values.startMinute)
+    const endDate = new Date(values.date.getFullYear(), values.date.getMonth(), values.date.getDay(), values.endHour, values.endMinute)
   }
 
   return (

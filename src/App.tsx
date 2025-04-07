@@ -2,6 +2,7 @@ import { Navigate, Route} from "react-router";
 import { Routes } from "react-router";
 import Week from "./week";
 
+
 function App() {
 
   function weekRedirect() {
