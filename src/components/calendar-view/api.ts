@@ -8,16 +8,19 @@ export const getTimeblocks = async () => {
     return response.json()
 }
 
-export const createTimeblock = async (name: string, location: string, startTime: Date, endTime: Date) => {
+export const createTimeblock = async (t: Timeblock) => {
     const req = new Request("http://localhost:5243/timeblock",
         {
             method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
             body: JSON.stringify(
                 {
-                    Name: name,
-                    Location: location,
-                    StarTime: startTime.toISOString(),
-                    EndTime: endTime.toISOString()
+                    Name: t.name,
+                    Location: t.location,
+                    StartTime: t.startTime.toISOString(),
+                    EndTime: t.endTime.toISOString()
                 }
             )
         }

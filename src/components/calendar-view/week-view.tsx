@@ -59,7 +59,7 @@ export default function WeekView() {
     }
 
     const { isPending, isError, data, error } = useQuery({
-        queryKey: ['todos'],
+        queryKey: ['timeblocks'],
         queryFn: getTimeblocks,
       })
     

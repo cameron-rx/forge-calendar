@@ -18,8 +18,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { cn } from "@/lib/utils"
 import { Calendar } from "../ui/calendar"
 import { CalendarIcon } from "lucide-react"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { createTimeblock } from "../calendar-view/api"
+import { Timeblock } from "@/types/types"
 
 const formSchema = z.object({
   name: z.string().min(1).max(50),
@@ -31,7 +32,10 @@ const formSchema = z.object({
   date: z.date(),
 })
 
-export default function TestForm() {
+interface props {
+  setActive: React.Dispatch<React.SetStateAction<boolean>>
+}
+export default function TestForm({setActive}: props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -45,11 +49,25 @@ export default function TestForm() {
     },
   })
 
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (t: Timeblock) => {
+      return createTimeblock(t)
+    },
+    onSuccess: () => {
+      console.log("Todo added")
+      queryClient.invalidateQueries({queryKey: ["timeblocks"]})
+      setActive(false)
+    }
+  })
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    const startDate = new Date(values.date.getFullYear(), values.date.getMonth(), values.date.getDay(), values.startHour, values.startMinute)
-    const endDate = new Date(values.date.getFullYear(), values.date.getMonth(), values.date.getDay(), values.endHour, values.endMinute)
+    const startDate = new Date(values.date.getFullYear(), values.date.getMonth(), values.date.getDate(), values.startHour, values.startMinute)
+    const endDate = new Date(values.date.getFullYear(), values.date.getMonth(), values.date.getDate(), values.endHour, values.endMinute)
+    const timeblock: Timeblock = {id: 0, name: values.name, location: values.location, startTime: startDate, endTime: endDate};
+    mutation.mutate(timeblock)
   }
+
 
   return (
     <Form {...form}>

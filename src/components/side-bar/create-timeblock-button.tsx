@@ -7,8 +7,11 @@ import {
     DialogTrigger,
   } from "@/components/ui/dialog"
 import CreateTimeblockForm from "./create-timeblock-form"
+import { useState } from "react"
 
 export default function CreateTimeblockButton() {
+    const [active, setActive] = useState(false)
+
     return (
     <Dialog>
         <DialogTrigger>Create</DialogTrigger>
@@ -16,7 +19,7 @@ export default function CreateTimeblockButton() {
             <DialogHeader>
                 <DialogTitle>New Timeblock</DialogTitle>
             </DialogHeader>
-            <CreateTimeblockForm />
+            <CreateTimeblockForm setActive={setActive}/>
         </DialogContent>
     </Dialog>
     )
