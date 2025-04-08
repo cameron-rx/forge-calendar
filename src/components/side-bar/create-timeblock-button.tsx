@@ -13,7 +13,7 @@ export default function CreateTimeblockButton() {
     const [active, setActive] = useState(false)
 
     return (
-    <Dialog>
+    <Dialog open={active} onOpenChange={setActive}>
         <DialogTrigger>Create</DialogTrigger>
         <DialogContent>
             <DialogHeader>
