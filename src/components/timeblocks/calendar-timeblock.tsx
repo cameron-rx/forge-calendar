@@ -60,6 +60,9 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
             <DialogContent>
                 {editMode ?
                     <>
+                        <DialogHeader>
+                            <DialogTitle>Edit Timeblock</DialogTitle>
+                        </DialogHeader>
                         <TimeblockForm defaults={formDefaults} onSubmitFn={(t: Timeblock) => console.log(t)} />
                     </>
                     :
@@ -68,8 +71,9 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
                             <DialogTitle>{timeblock.name}</DialogTitle>
                         </DialogHeader>
                         <DialogDescription>{timeblock.location}</DialogDescription>
-                        <DialogDescription>{timeblock.startTime.toLocaleString()}</DialogDescription>
-                        <DialogDescription>{timeblock.endTime.toLocaleString()}</DialogDescription>
+                        <DialogDescription>{timeblock.startTime.toLocaleString("en-us",{hour: "2-digit", minute: "2-digit", hour12: false})} - {timeblock.endTime.toLocaleString("en-us",{hour: "2-digit", minute: "2-digit", hour12: false})}
+                        </DialogDescription>
+                        <DialogDescription>{timeblock.startTime.toLocaleDateString()}</DialogDescription>
                         <Button onClick={() => setEditMode(true)}>Edit</Button>
                     </>
                 }

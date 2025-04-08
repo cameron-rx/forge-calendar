@@ -33,3 +33,28 @@ export const createTimeblock = async (t: Timeblock) => {
 
     return response.json()
 }
+
+export const updateTimeblock = async (t: Timeblock) => {
+    const req = new Request(`http://localhost:5243/timeblock/${t.id}` ,
+        {
+            method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(
+                {
+                    Name: t.name,
+                    Location: t.location,
+                    StartTime: t.startTime.toISOString(),
+                    EndTime: t.endTime.toISOString()
+                }
+            )
+        })
+
+    const response = await fetch(req)
+    if (!response.ok) {
+        throw new Error('Network response was not ok')
+    }
+
+    return response.json()
+}
