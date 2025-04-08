@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { Timeblock } from "@/types/types"
+import { Button } from "../ui/button"
 
 interface props {
     timeblock: Timeblock
@@ -10,6 +11,7 @@ interface props {
 
 export default function CalendarBlock({timeblock, containers, index}:props) {
     let [position, setPosition] = useState({transform: "translate(0px, 0px)", height: "0px", width: "0px"});
+    const [editMode, setEditMode] = useState(false)
 
     const startHours = timeblock.startTime.getHours();
     const startMinutes = timeblock.startTime.getMinutes()
@@ -20,6 +22,9 @@ export default function CalendarBlock({timeblock, containers, index}:props) {
     const hourDiff = endHours - startHours
     const minuteDiff = endMinutes - startMinutes
 
+    // Calculates top,left,height and width of calendar block to translate it into right posiion on screen
+    // TODO: Change number of characters displayed for name based on width
+    // TODO: Change size of name text based on height
     useEffect(() => {
         if (containers.current[index] != null) {
             let heightPerHour = containers.current[index].offsetHeight / 24
@@ -36,19 +41,24 @@ export default function CalendarBlock({timeblock, containers, index}:props) {
 
 
     return (
-        <Dialog>
-            <DialogTrigger>
+        <Dialog onOpenChange={() => setEditMode(false)}>
+            <DialogTrigger asChild>
                 <div className="z-10 absolute bg-blue-300 top-0 left-0" style={position}>
                     <h1 className="text-left p-2 text-xl">{timeblock.name}</h1>
                 </div>
             </DialogTrigger>
             <DialogContent>
-                <DialogHeader>
-                    <DialogTitle>{timeblock.name}</DialogTitle>
-                </DialogHeader>
-                <DialogDescription>{timeblock.location}</DialogDescription>
-                <DialogDescription>{timeblock.startTime.toLocaleString()}</DialogDescription>
-                <DialogDescription>{timeblock.endTime.toLocaleString()}</DialogDescription>
+                {editMode ? <></> :
+                    <>
+                        <DialogHeader>
+                            <DialogTitle>{timeblock.name}</DialogTitle>
+                        </DialogHeader>
+                        <DialogDescription>{timeblock.location}</DialogDescription>
+                        <DialogDescription>{timeblock.startTime.toLocaleString()}</DialogDescription>
+                        <DialogDescription>{timeblock.endTime.toLocaleString()}</DialogDescription>
+                        <Button onClick={() => setEditMode(true)}>Edit</Button>
+                    </>
+                 }
             </DialogContent>
         </Dialog>
     )
