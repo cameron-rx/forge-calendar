@@ -23,7 +23,8 @@ PATCH http://localhost:5243/timeblock/1
 Content-Type: application/json
 
 {
-    "Name": "Running"
+    "Name": "Running",
+    "EndTime": "2025-04-01T18:00:00.000Z"
 }
 ###
 

@@ -37,7 +37,7 @@ public class TimeBlockRepository : ITimeBlockRespository
         timeblock.Name = newItem.Name == "" ? timeblock.Name : newItem.Name;
         timeblock.Location = newItem.Location == "" ? timeblock.Location : newItem.Location;
         timeblock.StartTime = newItem.StartTime == default(DateTime) ? timeblock.StartTime : newItem.StartTime ;
-        timeblock.EndTime = newItem.EndTime == default(DateTime) ? timeblock.StartTime : newItem.StartTime;
+        timeblock.EndTime = newItem.EndTime == default(DateTime) ? timeblock.EndTime : newItem.EndTime;
 
         await Context.SaveChangesAsync();
 
