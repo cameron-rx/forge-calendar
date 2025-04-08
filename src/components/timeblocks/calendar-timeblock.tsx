@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
+import { Timeblock } from "@/types/types"
 
 interface props {
     timeblock: Timeblock
