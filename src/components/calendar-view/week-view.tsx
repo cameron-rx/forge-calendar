@@ -1,11 +1,11 @@
 import { getStartOfWeek } from "@/lib/utils"
 import DayContainer from "./day-container"
 import DayHeader from "./day-header"
-import CalendarBlock from "./calendar-block"
+import CalendarBlock from "../timeblocks/calendar-timeblock"
 import { useRef } from "react"
 import TimelineLabels from "./timeline-labels"
 import { useQuery } from "@tanstack/react-query"
-import { getTimeblocks } from "./api"
+import { getTimeblocks } from "../timeblocks/api"
 
 type Timeblock = {
     id: number
@@ -78,7 +78,7 @@ export default function WeekView() {
             </div>
             {isPending ? <h1>Loading</h1> :
                 convertAndFilterTimeblocks(data).map((timeblock) =>
-                    <CalendarBlock key={timeblock.id} name={timeblock.name} startTime={timeblock.startTime} endTime={timeblock.endTime} containers={containers} index={calculateIndex(timeblock.startTime)} />
+                    <CalendarBlock key={timeblock.id} timeblock={timeblock} containers={containers} index={calculateIndex(timeblock.startTime)} />
                 )}
         </>
     )

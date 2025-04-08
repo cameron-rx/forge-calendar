@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils"
 import { Calendar } from "../ui/calendar"
 import { CalendarIcon } from "lucide-react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { createTimeblock } from "../calendar-view/api"
+import { createTimeblock } from "./api"
 import { Timeblock } from "@/types/types"
 
 const formSchema = z.object({
