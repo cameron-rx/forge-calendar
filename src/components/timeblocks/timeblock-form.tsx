@@ -34,7 +34,7 @@ interface props {
   onSubmitFn: (t: Timeblock) => void
   defaults: {name:string, location: string, startHour: number, startMinute: number, endHour: number, endMinute: number, date: Date}
 }
-export default function TestForm({onSubmitFn, defaults}: props) {
+export default function TimeblockForm({onSubmitFn, defaults}: props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

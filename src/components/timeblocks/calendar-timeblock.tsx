@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { Timeblock } from "@/types/types"
 import { Button } from "../ui/button"
+import TimeblockForm from "./timeblock-form"
 
 interface props {
     timeblock: Timeblock
@@ -39,6 +40,15 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
         }
     }, [containers.current[index]])
 
+    const formDefaults = {
+        name: timeblock.name,
+        location: timeblock.location,
+        startHour: timeblock.startTime.getHours(),
+        startMinute: timeblock.startTime.getMinutes(),
+        endHour: timeblock.endTime.getHours(),
+        endMinute: timeblock.endTime.getMinutes(),
+        date: new Date(timeblock.startTime.getFullYear(),timeblock.startTime.getMonth(),timeblock.startTime.getDate())
+    }
 
     return (
         <Dialog onOpenChange={() => setEditMode(false)}>
@@ -50,6 +60,7 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
             <DialogContent>
                 {editMode ?
                     <>
+                        <TimeblockForm defaults={formDefaults} onSubmitFn={(t: Timeblock) => console.log(t)} />
                     </>
                     :
                     <>

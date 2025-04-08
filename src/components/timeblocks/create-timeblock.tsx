@@ -6,7 +6,7 @@ import {
     DialogTitle,
     DialogTrigger,
   } from "@/components/ui/dialog"
-import CreateTimeblockForm from "./timeblock-form"
+import TimeblockForm from "./timeblock-form"
 import { useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Timeblock } from "@/types/types";
@@ -44,7 +44,7 @@ export default function CreateTimeblockButton() {
                 <DialogHeader>
                     <DialogTitle>New Timeblock</DialogTitle>
                 </DialogHeader>
-                <CreateTimeblockForm defaults={formDefaults} onSubmitFn={(t: Timeblock) => mutation.mutate(t)}/>
+                <TimeblockForm defaults={formDefaults} onSubmitFn={(t: Timeblock) => mutation.mutate(t)}/>
             </DialogContent>
     </Dialog>
     )
