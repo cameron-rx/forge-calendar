@@ -21,7 +21,7 @@ export default function CreateTimeblockButton() {
             return createTimeblock(t)
         },
         onSuccess: () => {
-            console.log("Todo added")
+            console.log("Timeblock added")
             queryClient.invalidateQueries({ queryKey: ["timeblocks"] })
             setActive(false)
         }

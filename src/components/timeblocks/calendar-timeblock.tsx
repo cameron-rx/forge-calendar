@@ -3,6 +3,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Timeblock } from "@/types/types"
 import { Button } from "../ui/button"
 import TimeblockForm from "./timeblock-form"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { updateTimeblock } from "./api"
 
 interface props {
     timeblock: Timeblock
@@ -11,8 +13,11 @@ interface props {
 }
 
 export default function CalendarBlock({ timeblock, containers, index }: props) {
+
+    // Calculates top,left,height and width of calendar block to translate it into right posiion on screen
+    // TODO: Change number of characters displayed for name based on width
+    // TODO: Change size of name text based on height
     let [position, setPosition] = useState({ transform: "translate(0px, 0px)", height: "0px", width: "0px" });
-    const [editMode, setEditMode] = useState(false)
 
     const startHours = timeblock.startTime.getHours();
     const startMinutes = timeblock.startTime.getMinutes()
@@ -23,9 +28,6 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
     const hourDiff = endHours - startHours
     const minuteDiff = endMinutes - startMinutes
 
-    // Calculates top,left,height and width of calendar block to translate it into right posiion on screen
-    // TODO: Change number of characters displayed for name based on width
-    // TODO: Change size of name text based on height
     useEffect(() => {
         if (containers.current[index] != null) {
             let heightPerHour = containers.current[index].offsetHeight / 24
@@ -39,6 +41,21 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
             setPosition({ transform: `translate(${left}px, ${top}px)`, height: `${height}px`, width: `${width}px` })
         }
     }, [containers.current[index]])
+    
+    // Create query for updating timeblock from edit form values
+    const [editMode, setEditMode] = useState(false)
+    const queryClient = useQueryClient();
+    const mutation = useMutation({
+        mutationFn: (t: Timeblock) => {
+            return updateTimeblock(t)
+        },
+        onSuccess: (data) => {
+            console.log("Updated timeblock")
+            console.log(data)
+            queryClient.invalidateQueries({ queryKey: ["timeblocks"] })
+            setEditMode(false)
+        }
+    })
 
     const formDefaults = {
         name: timeblock.name,
@@ -63,7 +80,11 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
                         <DialogHeader>
                             <DialogTitle>Edit Timeblock</DialogTitle>
                         </DialogHeader>
-                        <TimeblockForm defaults={formDefaults} onSubmitFn={(t: Timeblock) => console.log(t)} />
+                        <TimeblockForm defaults={formDefaults} onSubmitFn={(t: Timeblock) => {
+                            t.id = timeblock.id
+                            mutation.mutate(t)
+                        }
+                        } />
                     </>
                     :
                     <>
