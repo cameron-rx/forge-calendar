@@ -14,7 +14,7 @@ import {
   SidebarRail,
   SidebarSeparator,
 } from "@/components/ui/sidebar"
-import CreateTimeblockButton from "../timeblocks/create-timeblock-button"
+import CreateTimeblockButton from "../timeblocks/create-timeblock"
 
 // This is sample data.
 const data = {

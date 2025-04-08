@@ -18,8 +18,6 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { cn } from "@/lib/utils"
 import { Calendar } from "../ui/calendar"
 import { CalendarIcon } from "lucide-react"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { createTimeblock } from "./api"
 import { Timeblock } from "@/types/types"
 
 const formSchema = z.object({
@@ -33,39 +31,29 @@ const formSchema = z.object({
 })
 
 interface props {
-  setActive: React.Dispatch<React.SetStateAction<boolean>>
+  onSubmitFn: (t: Timeblock) => void
+  defaults: {name:string, location: string, startHour: number, startMinute: number, endHour: number, endMinute: number, date: Date}
 }
-export default function TestForm({setActive}: props) {
+export default function TestForm({onSubmitFn, defaults}: props) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      location: "",
-      startHour: 0,
-      startMinute: 0,
-      endHour: 0,
-      endMinute: 0,
-      date: new Date(Date.now())
+      name: defaults.name,
+      location: defaults.location,
+      startHour: defaults.startHour,
+      startMinute: defaults.startMinute,
+      endHour: defaults.endHour,
+      endMinute: defaults.endMinute,
+      date: defaults.date
     },
   })
 
-  const queryClient = useQueryClient();
-  const mutation = useMutation({
-    mutationFn: (t: Timeblock) => {
-      return createTimeblock(t)
-    },
-    onSuccess: () => {
-      console.log("Todo added")
-      queryClient.invalidateQueries({queryKey: ["timeblocks"]})
-      setActive(false)
-    }
-  })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const startDate = new Date(values.date.getFullYear(), values.date.getMonth(), values.date.getDate(), values.startHour, values.startMinute)
     const endDate = new Date(values.date.getFullYear(), values.date.getMonth(), values.date.getDate(), values.endHour, values.endMinute)
     const timeblock: Timeblock = {id: 0, name: values.name, location: values.location, startTime: startDate, endTime: endDate};
-    mutation.mutate(timeblock)
+    onSubmitFn(timeblock)
   }
 
 

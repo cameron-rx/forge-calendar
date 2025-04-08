@@ -9,8 +9,8 @@ interface props {
     index: number
 }
 
-export default function CalendarBlock({timeblock, containers, index}:props) {
-    let [position, setPosition] = useState({transform: "translate(0px, 0px)", height: "0px", width: "0px"});
+export default function CalendarBlock({ timeblock, containers, index }: props) {
+    let [position, setPosition] = useState({ transform: "translate(0px, 0px)", height: "0px", width: "0px" });
     const [editMode, setEditMode] = useState(false)
 
     const startHours = timeblock.startTime.getHours();
@@ -18,7 +18,7 @@ export default function CalendarBlock({timeblock, containers, index}:props) {
 
     const endHours = timeblock.endTime.getHours()
     const endMinutes = timeblock.endTime.getMinutes();
-    
+
     const hourDiff = endHours - startHours
     const minuteDiff = endMinutes - startMinutes
 
@@ -29,13 +29,13 @@ export default function CalendarBlock({timeblock, containers, index}:props) {
         if (containers.current[index] != null) {
             let heightPerHour = containers.current[index].offsetHeight / 24
 
-            let top = containers.current[index].offsetTop + (heightPerHour * startHours) + (startMinutes * (heightPerHour/60))
+            let top = containers.current[index].offsetTop + (heightPerHour * startHours) + (startMinutes * (heightPerHour / 60))
             let left = containers.current[index].offsetLeft
 
-            let height = (hourDiff * heightPerHour) + (minuteDiff * (heightPerHour/60))
+            let height = (hourDiff * heightPerHour) + (minuteDiff * (heightPerHour / 60))
             let width = containers.current[index].offsetWidth
 
-            setPosition({transform: `translate(${left}px, ${top}px)`, height: `${height}px`, width: `${width}px`})
+            setPosition({ transform: `translate(${left}px, ${top}px)`, height: `${height}px`, width: `${width}px` })
         }
     }, [containers.current[index]])
 
@@ -48,7 +48,10 @@ export default function CalendarBlock({timeblock, containers, index}:props) {
                 </div>
             </DialogTrigger>
             <DialogContent>
-                {editMode ? <></> :
+                {editMode ?
+                    <>
+                    </>
+                    :
                     <>
                         <DialogHeader>
                             <DialogTitle>{timeblock.name}</DialogTitle>
@@ -58,7 +61,7 @@ export default function CalendarBlock({timeblock, containers, index}:props) {
                         <DialogDescription>{timeblock.endTime.toLocaleString()}</DialogDescription>
                         <Button onClick={() => setEditMode(true)}>Edit</Button>
                     </>
-                 }
+                }
             </DialogContent>
         </Dialog>
     )
