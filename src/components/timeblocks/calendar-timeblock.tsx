@@ -45,7 +45,7 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
     // Create query for updating timeblock from edit form values
     const [editMode, setEditMode] = useState(false)
     const queryClient = useQueryClient();
-    const mutation = useMutation({
+    const updateMutation = useMutation({
         mutationFn: (t: Timeblock) => {
             return updateTimeblock(t)
         },
@@ -56,6 +56,7 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
             setEditMode(false)
         }
     })
+
 
     const formDefaults = {
         name: timeblock.name,
@@ -82,7 +83,7 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
                         </DialogHeader>
                         <TimeblockForm defaults={formDefaults} onSubmitFn={(t: Timeblock) => {
                             t.id = timeblock.id
-                            mutation.mutate(t)
+                            updateMutation.mutate(t)
                         }
                         } />
                     </>
@@ -96,6 +97,7 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
                         </DialogDescription>
                         <DialogDescription>{timeblock.startTime.toLocaleDateString()}</DialogDescription>
                         <Button onClick={() => setEditMode(true)}>Edit</Button>
+                        <Button>Delete</Button>
                     </>
                 }
             </DialogContent>
