@@ -4,7 +4,7 @@ import { Timeblock } from "@/types/types"
 import { Button } from "../ui/button"
 import TimeblockForm from "./timeblock-form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { updateTimeblock } from "./api"
+import { deleteTimeblock, updateTimeblock } from "./api"
 
 interface props {
     timeblock: Timeblock
@@ -29,18 +29,20 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
     const minuteDiff = endMinutes - startMinutes
 
     useEffect(() => {
-        if (containers.current[index] != null) {
-            let heightPerHour = containers.current[index].offsetHeight / 24
+        const container = containers.current[index]
 
-            let top = containers.current[index].offsetTop + (heightPerHour * startHours) + (startMinutes * (heightPerHour / 60))
-            let left = containers.current[index].offsetLeft
+        if (!container) return;
 
-            let height = (hourDiff * heightPerHour) + (minuteDiff * (heightPerHour / 60))
-            let width = containers.current[index].offsetWidth
+        let heightPerHour = container.offsetHeight / 24
 
-            setPosition({ transform: `translate(${left}px, ${top}px)`, height: `${height}px`, width: `${width}px` })
-        }
-    }, [containers.current[index]])
+        let top = container.offsetTop + (heightPerHour * startHours) + (startMinutes * (heightPerHour / 60))
+        let left = container.offsetLeft
+
+        let height = (hourDiff * heightPerHour) + (minuteDiff * (heightPerHour / 60))
+        let width = container.offsetWidth
+
+        setPosition({ transform: `translate(${left}px, ${top}px)`, height: `${height}px`, width: `${width}px` })
+    }, [containers, index])
     
     // Create query for updating timeblock from edit form values
     const [editMode, setEditMode] = useState(false)
@@ -57,6 +59,17 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
         }
     })
 
+    const deleteMutation = useMutation({
+        mutationFn: (t: Timeblock) => {
+            console.log("Starting delete mutation")
+            return deleteTimeblock(t)
+        },
+        onSuccess: (data) => {
+            console.log("Deleted timeblock")
+            queryClient.invalidateQueries({ queryKey: ["timeblocks"], refetchType: "all" })
+            console.log(data)
+        }
+    })
 
     const formDefaults = {
         name: timeblock.name,
@@ -68,8 +81,13 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
         date: new Date(timeblock.startTime.getFullYear(),timeblock.startTime.getMonth(),timeblock.startTime.getDate())
     }
 
+    const [open, setOpen] = useState(false)
+
     return (
-        <Dialog onOpenChange={() => setEditMode(false)}>
+        <Dialog open={open} onOpenChange={() => {
+            setOpen(!open)
+            setEditMode(false)
+        }}>
             <DialogTrigger asChild>
                 <div className="z-10 absolute bg-blue-300 top-0 left-0" style={position}>
                     <h1 className="text-left p-2 text-xl">{timeblock.name}</h1>
@@ -97,7 +115,12 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
                         </DialogDescription>
                         <DialogDescription>{timeblock.startTime.toLocaleDateString()}</DialogDescription>
                         <Button onClick={() => setEditMode(true)}>Edit</Button>
-                        <Button>Delete</Button>
+                        <Button onClick={() => {
+                            deleteMutation.mutate(timeblock)
+                            setOpen(false)
+                        }}>
+                            Delete
+                        </Button>
                     </>
                 }
             </DialogContent>
