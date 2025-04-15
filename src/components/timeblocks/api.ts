@@ -58,3 +58,20 @@ export const updateTimeblock = async (t: Timeblock) => {
 
     return response.json()
 }
+
+export const deleteTimeblock = async (t: Timeblock) => {
+    const req = new Request(`http://localhost:5243/timeblock/${t.id}` ,
+        {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        })
+
+    const response = await fetch(req)
+    if (!response.ok) {
+        throw new Error('Network response was not ok')
+    }
+
+    return response.json()
+}
