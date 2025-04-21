@@ -1,6 +1,7 @@
 import { Navigate, Route} from "react-router";
 import { Routes } from "react-router";
 import Week from "./week";
+import Login from "./login";
 
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
 
     return (
     <>
-    <Navigate to={`/week/${year}/${month}/${day}`}/>
+    <Navigate to={`/app/${year}/${month}/${day}`}/>
     </>
     )
   }
@@ -21,11 +22,12 @@ function App() {
   return (
     <>
     <Routes>
-      <Route path="week">
+      <Route path="app">
         <Route index element={weekRedirect()} />
         <Route path="*" element={weekRedirect()} />
         <Route path=":year/:month/:day" element={<Week />} />
       </Route>
+      <Route path="login" element={<Login />} />
     </Routes>
     </>
   )
