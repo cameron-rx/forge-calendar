@@ -1,5 +1,3 @@
-using Microsoft.AspNetCore.Mvc.Filters;
-
 public static class TimeBlockEndpoints
 {
     public static void MapTimeBlockEndpoints(this WebApplication app)

@@ -31,3 +31,11 @@ Content-Type: application/json
 DELETE http://localhost:5243/timeblock/4
 ###
 GET http://localhost:5243/timeblock
+###
+POST http://localhost:5243/register
+Content-Type: application/json
+
+{
+  "email": "camjr246@yahoo.co.uk",
+  "password": "zxcCXZ2003#"
+}
