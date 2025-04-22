@@ -1,9 +1,9 @@
 import { Navigate, Route} from "react-router";
 import { Routes } from "react-router";
-import Week from "./week";
-import Login from "./login";
+import Week from "./components/calendar-view/week";
+import Login from "./components/login/login";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
-import { ProtectedRoute } from "./protected-route";
+import { ProtectedRoute } from "./routes/protected-route";
 
 
 function App() {

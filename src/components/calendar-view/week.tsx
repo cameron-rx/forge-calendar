@@ -1,9 +1,9 @@
-import { AppSidebar } from "./components/side-bar/app-sidebar"
-import { SidebarProvider, SidebarInset, SidebarTrigger } from "./components/ui/sidebar"
-import { ButtonArrow } from "./components/calendar-view/button-arrow"
-import { Separator } from "./components/ui/separator"
-import { getEndOfWeek, getStartOfWeek } from "./lib/utils"
-import WeekView from "./components/calendar-view/week-view"
+import { AppSidebar } from "../side-bar/app-sidebar"
+import { SidebarProvider, SidebarInset, SidebarTrigger } from "../ui/sidebar"
+import { ButtonArrow } from "./button-arrow"
+import { Separator } from "../ui/separator"
+import { getEndOfWeek, getStartOfWeek } from "../../lib/utils"
+import WeekView from "./week-view"
 
 
 export default function Week() {

@@ -22,7 +22,7 @@ export function AuthProvider({ children }: props) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetch("http://localhost:5243/loggedin", {
+        fetch("http://localhost:5243/auth/me", {
             credentials: "include"
         }).then( (res) => {
             res.ok ? res.json() : null

@@ -1,8 +1,16 @@
-import { Button } from "./components/ui/button";
-import { Input } from "./components/ui/input";
-import { Tabs, TabsList, TabsTrigger, TabsContent} from "./components/ui/tabs";
+import { useState } from "react";
+import { Button } from "../ui/button";
+import { Input } from "../ui/input";
+import { Tabs, TabsList, TabsTrigger, TabsContent} from "../ui/tabs";
+import RegisterForm from "./register-form";
+
+
 
 export default function Login() {
+
+    const [error, setError] = useState<string | null>(null)
+
+
     return (
         <div className="flex flex-col justify-center align-middle">
             <img className="max-w-1/10 h-auto"src="forge-logo.png"></img>
@@ -17,10 +25,7 @@ export default function Login() {
                     <Button type="submit">Login</Button> 
                 </TabsContent>
                 <TabsContent value="register">
-                    <Input type="email" id="email" placeholder="Email"/>
-                    <Input type="password" id="password" placeholder="Password"/>
-                    <Input type="password" id="password2" placeholder="Retype Password"/>
-                    <Button type="submit">Register</Button> 
+                    <RegisterForm />
                 </TabsContent>
             </Tabs>
         </div>
