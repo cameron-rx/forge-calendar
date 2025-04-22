@@ -15,7 +15,6 @@ import {
   SidebarSeparator,
 } from "@/components/ui/sidebar"
 import CreateTimeblockButton from "../timeblocks/create-timeblock"
-import { Button } from "react-day-picker"
 import { useNavigate } from "react-router"
 
 // This is sample data.
@@ -55,7 +54,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <SidebarSeparator className="mx-0" />
-        <button onClick={() => {navigate(`/week/${year}/${month}/${day}`)}}>Today</button>
+        <button onClick={() => {navigate(`/app/${year}/${month}/${day}`)}}>Today</button>
         <SidebarSeparator className="mx-0" />
         <DatePicker />
         <SidebarSeparator className="mx-0" />
