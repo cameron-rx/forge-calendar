@@ -22,11 +22,13 @@ export function AuthProvider({ children }: props) {
     const navigate = useNavigate()
 
     useEffect(() => {
+        console.log("auth check")
         fetch("http://localhost:5243/auth/me", {
             credentials: "include"
         }).then( (res) => {
-            res.ok ? res.json() : null
+            return res.json()
         }).then((data: any) => {
+            console.log(data)
             setAuth(data.isLoggedIn)
             setIsLoading(false)
         }).catch(() => {

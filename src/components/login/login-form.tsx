@@ -4,38 +4,38 @@ import { z } from "zod"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useState } from "react";
-import { register } from "./api";
+import { useContext, useState } from "react";
+import { login } from "./api";
+import { useAuth } from "@/contexts/AuthContext";
+import { useNavigate } from "react-router";
 
-const aspNETPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6,}$/;
 
 const formSchema = z.object({
     email: z.string().email(),
-    password: z.string().regex(aspNETPasswordRegex),
-    passwordRetype: z.string()
-}).refine((data) => data.password == data.passwordRetype, {
-    path: ["passwordRetype"],
-    message: "Passwords do not match"
+    password: z.string(),
 })
 
-export default function RegisterForm() {
+export default function LoginForm() {
     const [message, setMessage] = useState<string | null>(null)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             email: "",
             password: "",
-            passwordRetype: ""
         },
     })
+    const {setAuth}= useAuth()
+    const navigate = useNavigate()
 
-    const tryRegister = async (values: z.infer<typeof formSchema>) => {
+    const tryLogin = async (values: z.infer<typeof formSchema>) => {
+        console.log("Attempting login")
         try {
-            const res = await register({email: values.email, password: values.password})
-            if (res) {
-                setMessage(`Success Account Created:  Proceed to login`)
+            const success = await login({email: values.email, password: values.password})
+            if (success) {
+                setAuth(true)
+                navigate("/app")
+                setMessage("Success")
             }
-
         } catch (error) {
             if (error instanceof Error) {
                 setMessage(`Error: ${error.message}`)
@@ -45,7 +45,7 @@ export default function RegisterForm() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(tryRegister)} className="space-y-3">
+            <form onSubmit={form.handleSubmit(tryLogin)} className="space-y-3">
                 <FormField
                     control={form.control}
                     name="email"
@@ -70,19 +70,7 @@ export default function RegisterForm() {
                         </FormItem>
                     )}
                 />
-                <FormField
-                    control={form.control}
-                    name="passwordRetype"
-                    render={({ field }) => (
-                        <FormItem>
-                            <FormControl>
-                                <Input type="password" placeholder="Retype Password" {...field} />
-                            </FormControl>
-                            <FormMessage />
-                        </FormItem>
-                    )}
-                />
-                <Button type="submit">Register</Button>
+                <Button type="submit">Login</Button>
             </form>
             {message ? <h1>{message}</h1> : null}
         </Form>

@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
 import { Tabs, TabsList, TabsTrigger, TabsContent} from "../ui/tabs";
 import RegisterForm from "./register-form";
+import LoginForm from "./login-form";
 
 
 
@@ -20,9 +19,7 @@ export default function Login() {
                     <TabsTrigger value="register">Register</TabsTrigger>
                 </TabsList>
                 <TabsContent value="login">
-                    <Input type="email" id="email" placeholder="Email"/>
-                    <Input type="password" id="password" placeholder="Password"/>
-                    <Button type="submit">Login</Button> 
+                    <LoginForm />
                 </TabsContent>
                 <TabsContent value="register">
                     <RegisterForm />
