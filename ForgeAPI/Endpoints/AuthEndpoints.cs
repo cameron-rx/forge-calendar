@@ -1,3 +1,5 @@
+using System.Security.Claims;
+
 public static class AuthEndpoints
 {
     public static void MapAuthEndpoints(this WebApplication app)
@@ -6,17 +8,17 @@ public static class AuthEndpoints
 
         group.MapGet("/me", async (HttpContext context) =>
         {
-            var value = false;
-            var authCheck = new AuthCheckDTO { isLoggedIn = false };
-            // Check whether user is authenticted 
-            // if yes return {isLoggedIn: true}
-            // else return {isLoggedIn: false}
 
-            if (context.User.Identity.IsAuthenticated == true) {
+            var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            Console.WriteLine(userId);
+
+            var authCheck = new AuthCheckDTO { isLoggedIn = false };
+
+            if (context.User.Identity?.IsAuthenticated == true) {
                 authCheck.isLoggedIn = true;
             }
 
-            return Results.Ok(authCheck);
+            return Results.Json(authCheck);
         });
     }
 
