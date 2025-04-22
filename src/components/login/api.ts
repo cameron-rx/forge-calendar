@@ -1,5 +1,5 @@
 export const register = async ({email, password}: {email:string, password:string}) => {
-    const req = new Request("http://localhost:5243/timeblock",
+    const req = new Request("http://localhost:5243/register",
         {
             method: "POST",
             headers: {
@@ -15,5 +15,15 @@ export const register = async ({email, password}: {email:string, password:string
     )
 
     const response = await fetch(req)
-    return response.json()
+
+    if (response.ok) {
+        return true;
+    } else if (response.status == 400) {
+        throw new Error('Account already created with that email address')
+    } else if (!response.ok) {
+        throw new Error('Network response was not ok')
+    } else {
+        return true;
+    }
+
 }
