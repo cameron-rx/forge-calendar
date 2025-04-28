@@ -2,7 +2,7 @@ public static class TimeBlockEndpoints
 {
     public static void MapTimeBlockEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/timeblock").RequireAuthorization();
+        var group = app.MapGroup("/timeblock");
 
         group.MapPost("/", async (TimeBlockRequestDTO requestTimeblock, ITimeBlockService timeBlockService) =>
         {
