@@ -10,7 +10,7 @@ public class TimeBlockService : ITimeBlockService
         this.timeBlockRespository = timeBlockRespository;
     }
 
-    public async Task<TimeBlockResponseDTO> Create(TimeBlockRequestDTO item, int userId)
+    public async Task<TimeBlockResponseDTO> Create(TimeBlockRequestDTO item, string userId)
     {
         var timeblock = new TimeBlock{ Name = item.Name, Location = item.Location, StartTime = item.StartTime, EndTime = item.EndTime, UserId = userId};
         await timeBlockRespository.AddTimeBlock(timeblock);

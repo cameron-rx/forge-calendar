@@ -1,12 +1,15 @@
+using System.Security.Claims;
+
 public static class TimeBlockEndpoints
 {
     public static void MapTimeBlockEndpoints(this WebApplication app)
     {
         var group = app.MapGroup("/timeblock").RequireAuthorization();
 
-        group.MapPost("/", async (TimeBlockRequestDTO requestTimeblock, ITimeBlockService timeBlockService) =>
+        group.MapPost("/", async (TimeBlockRequestDTO requestTimeblock, ITimeBlockService timeBlockService, ClaimsPrincipal user) =>
         {
-            var timeblock = await timeBlockService.Create(requestTimeblock, 1);
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var timeblock = await timeBlockService.Create(requestTimeblock, userId);
             return Results.Created($"/timeblock/{timeblock.Id}", timeblock);
         });
 
