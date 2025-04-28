@@ -12,7 +12,6 @@ public static class AuthEndpoints
         {
 
             var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            Console.WriteLine(userId);
 
             var authCheck = new AuthCheckDTO { isLoggedIn = false };
 

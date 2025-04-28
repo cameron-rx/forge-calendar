@@ -15,28 +15,27 @@ public class TimeBlockRepository : ITimeBlockRespository
         return await Context.Timeblocks.Where(t => t.UserId == UserId).ToListAsync();
     }
 
-    public async Task<TimeBlock?> Get(int timeblockId)
+    public async Task<TimeBlock?> Get(string userId, int timeblockId)
     {
-        return await Context.Timeblocks.FindAsync(timeblockId);
+        return await Context.Timeblocks.Where(t => t.Id == timeblockId && t.UserId == userId).FirstAsync();
     }
 
     public async Task AddTimeBlock(TimeBlock item)
     {
-        Console.WriteLine(item.UserId);
         await Context.Timeblocks.AddAsync(item);
         await Context.SaveChangesAsync();
     }
-    public async Task RemoveTimeBlock(int timeblockId){
-        var item = await Get(timeblockId);
+    public async Task RemoveTimeBlock(string userId, int timeblockId){
+        var item = await Get(userId, timeblockId);
         if (item != null)
         {
             Context.Timeblocks.Remove(item);
             await Context.SaveChangesAsync();
         }
     }
-    public async Task<TimeBlock> UpdateTimeBlock(int oldItemId, TimeBlock newItem)
+    public async Task<TimeBlock> UpdateTimeBlock(string userId, int oldItemId, TimeBlock newItem)
     {
-        var timeblock = await Get(oldItemId);
+        var timeblock = await Get(userId, oldItemId);
         timeblock.Name = newItem.Name == "" ? timeblock.Name : newItem.Name;
         timeblock.Location = newItem.Location == "" ? timeblock.Location : newItem.Location;
         timeblock.StartTime = newItem.StartTime == default(DateTime) ? timeblock.StartTime : newItem.StartTime ;
@@ -48,9 +47,9 @@ public class TimeBlockRepository : ITimeBlockRespository
 
     }
 
-    public async Task<bool> Exists(int timeblockId)
+    public async Task<bool> Exists(string userId, int timeblockId)
     {
-       return  await Context.Timeblocks.AnyAsync(t => t.Id == timeblockId);
+       return  await Context.Timeblocks.AnyAsync(t => t.Id == timeblockId && t.UserId == userId);
     }
 }
 

@@ -24,17 +24,23 @@ public static class TimeBlockEndpoints
             return Results.Json(timeblocks);
         });
 
-        group.MapDelete("/{id}", async (int id, ITimeBlockService timeBlockService) =>
+        group.MapDelete("/{id}", async (int id, ITimeBlockService timeBlockService, ClaimsPrincipal user) =>
         {
-            await timeBlockService.Delete(1, id);
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Results.Unauthorized();
+
+            await timeBlockService.Delete(userId, id);
             return Results.NoContent();
         });
 
-        group.MapPatch("/{id}", async (int id, TimeBlockRequestDTO requestTimeblock, ITimeBlockService timeBlockService) =>
+        group.MapPatch("/{id}", async (int id, TimeBlockRequestDTO requestTimeblock, ITimeBlockService timeBlockService, ClaimsPrincipal user) =>
         {
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Results.Unauthorized();
+
             try
             {
-               var patchedTimeBlock = await timeBlockService.Update(id,requestTimeblock);
+               var patchedTimeBlock = await timeBlockService.Update(userId, id,requestTimeblock);
                return Results.Ok(patchedTimeBlock);
             }
             catch (System.Exception exception)

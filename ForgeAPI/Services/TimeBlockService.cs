@@ -24,14 +24,14 @@ public class TimeBlockService : ITimeBlockService
         return DTOs;
     }
 
-    public async Task Delete(int userId, int timeblockId)
+    public async Task Delete(string userId, int timeblockId)
     {
-        await timeBlockRespository.RemoveTimeBlock(timeblockId);
+        await timeBlockRespository.RemoveTimeBlock(userId, timeblockId);
     }
 
-    public async Task<TimeBlockResponseDTO> Update(int timeblockId, TimeBlockRequestDTO timeblockDTO)
+    public async Task<TimeBlockResponseDTO> Update(string userId, int timeblockId, TimeBlockRequestDTO timeblockDTO)
     {
-        bool exists = await timeBlockRespository.Exists(timeblockId);
+        bool exists = await timeBlockRespository.Exists(userId, timeblockId);
 
         if (exists)
         {
@@ -41,7 +41,7 @@ public class TimeBlockService : ITimeBlockService
             timeblock.StartTime = timeblockDTO.StartTime;
             timeblock.EndTime = timeblockDTO.EndTime;
 
-            TimeBlock updatedTimeblock = await timeBlockRespository.UpdateTimeBlock(timeblockId, timeblock);
+            TimeBlock updatedTimeblock = await timeBlockRespository.UpdateTimeBlock(userId, timeblockId, timeblock);
 
             return new TimeBlockResponseDTO 
             {
