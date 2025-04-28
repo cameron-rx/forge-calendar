@@ -10,7 +10,7 @@ public class TimeBlockRepository : ITimeBlockRespository
         Context = context;
     }
 
-    public async Task<IEnumerable<TimeBlock>> GetAllTimeBlocks(int UserId)
+    public async Task<IEnumerable<TimeBlock>> GetAllTimeBlocks(string UserId)
     {
         return await Context.Timeblocks.Where(t => t.UserId == UserId).ToListAsync();
     }

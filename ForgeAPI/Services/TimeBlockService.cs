@@ -17,7 +17,7 @@ public class TimeBlockService : ITimeBlockService
         return new TimeBlockResponseDTO{ Id = timeblock.Id, Name=timeblock.Name, Location=timeblock.Location, StartTime=timeblock.StartTime, EndTime=timeblock.EndTime};
     }
 
-    public async Task<List<TimeBlockResponseDTO>> GetAll(int userId)
+    public async Task<List<TimeBlockResponseDTO>> GetAll(string userId)
     {
         var timeblocks = await timeBlockRespository.GetAllTimeBlocks(userId);
         List<TimeBlockResponseDTO> DTOs =  timeblocks.Select(t => new TimeBlockResponseDTO { Id = t.Id, Name = t.Name, Location = t.Location, StartTime = t.StartTime, EndTime = t.EndTime }).ToList();

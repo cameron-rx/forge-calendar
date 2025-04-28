@@ -9,13 +9,18 @@ public static class TimeBlockEndpoints
         group.MapPost("/", async (TimeBlockRequestDTO requestTimeblock, ITimeBlockService timeBlockService, ClaimsPrincipal user) =>
         {
             var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Results.Unauthorized();
+
             var timeblock = await timeBlockService.Create(requestTimeblock, userId);
             return Results.Created($"/timeblock/{timeblock.Id}", timeblock);
         });
 
-        group.MapGet("/", async (ITimeBlockService  timeBlockService) =>
+        group.MapGet("/", async (ITimeBlockService  timeBlockService, ClaimsPrincipal user) =>
         {
-            var timeblocks = await timeBlockService.GetAll(1);
+            var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (userId == null) return Results.Unauthorized();
+
+            var timeblocks = await timeBlockService.GetAll(userId);
             return Results.Json(timeblocks);
         });
 
