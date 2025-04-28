@@ -1,4 +1,6 @@
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 
 public static class AuthEndpoints
 {
@@ -6,7 +8,7 @@ public static class AuthEndpoints
     {
         var group = app.MapGroup("/auth");
 
-        group.MapGet("/me", async (HttpContext context) =>
+        group.MapGet("/me", (HttpContext context) =>
         {
 
             var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -20,6 +22,11 @@ public static class AuthEndpoints
 
             return Results.Json(authCheck);
         });
+
+        group.MapPost("/logout", async (HttpContext context) => {
+            await context.SignOutAsync(IdentityConstants.ApplicationScheme);
+            return Results.Ok();
+        }).RequireAuthorization();
     }
 
 

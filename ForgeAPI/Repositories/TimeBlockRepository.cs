@@ -28,8 +28,11 @@ public class TimeBlockRepository : ITimeBlockRespository
     }
     public async Task RemoveTimeBlock(int timeblockId){
         var item = await Get(timeblockId);
-        Context.Timeblocks.Remove(item);
-        await Context.SaveChangesAsync();
+        if (item != null)
+        {
+            Context.Timeblocks.Remove(item);
+            await Context.SaveChangesAsync();
+        }
     }
     public async Task<TimeBlock> UpdateTimeBlock(int oldItemId, TimeBlock newItem)
     {
