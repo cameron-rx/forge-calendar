@@ -1,7 +1,7 @@
 import { Timeblock } from "@/types/types"
 
 export const getTimeblocks = async () => {
-    const response = await fetch("http://localhost:5243/timeblock")
+    const response = await fetch("http://localhost:5243/timeblock", {credentials: "include"})
     if (!response.ok) {
         throw new Error('Network response was not ok')
     }
@@ -26,7 +26,7 @@ export const createTimeblock = async (t: Timeblock) => {
         }
     )
 
-    const response = await fetch(req)
+    const response = await fetch(req, {credentials: "include"})
     if (!response.ok) {
         throw new Error('Network response was not ok')
     }
@@ -51,7 +51,7 @@ export const updateTimeblock = async (t: Timeblock) => {
             )
         })
 
-    const response = await fetch(req)
+    const response = await fetch(req, {credentials:"include"})
     if (!response.ok) {
         throw new Error('Network response was not ok')
     }
@@ -69,7 +69,7 @@ export const deleteTimeblock = async (t: Timeblock) => {
             },
         })
 
-    const response = await fetch(req)
+    const response = await fetch(req, {credentials:"include"})
     if (!response.ok) {
         throw new Error('Network response was not ok')
     }
