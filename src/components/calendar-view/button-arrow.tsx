@@ -27,7 +27,7 @@ export function ButtonArrow({direction, offset}:props) {
     }
 
   return (
-    <Button variant="outline" size="icon" className="m-3" onClick={() => navigate(`/week/${newYear}/${newMonth}/${newDay}`)}>
+    <Button variant="outline" size="icon" className="m-3" onClick={() => navigate(`/app/${newYear}/${newMonth}/${newDay}`)}>
         {getDirection()}
     </Button>
   )
