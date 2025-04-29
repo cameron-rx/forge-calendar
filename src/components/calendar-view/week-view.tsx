@@ -65,7 +65,7 @@ export default function WeekView() {
     
     return ( 
         <>
-            <div id="weekContainer" className="w-full h-full grid grid-cols-[5rem_repeat(7,_1fr)] grid-rows-[2fr_repeat(24,_1fr)] ">
+            <div id="weekContainer" className="relative w-full h-full grid grid-cols-[4rem_repeat(7,_1fr)] grid-rows-[4rem_repeat(24,_1fr)] ">
 
                 <div className="">
                 </div>
@@ -89,6 +89,7 @@ export default function WeekView() {
                         ))}
                     </>
                 ))}
+
 
             </div>
         </>
