@@ -65,37 +65,32 @@ export default function WeekView() {
     
     return ( 
         <>
-            <div id="weekContainer" className="w-full h-full grid grid-cols-[5rem_repeat(7,_1fr)] grid-rows-[8vh_repeat(288,_1fr)] ">
+            <div id="weekContainer" className="w-full h-full grid grid-cols-[5rem_repeat(7,_1fr)] grid-rows-[2fr_repeat(24,_1fr)] ">
 
-                <div className="col-start-1 col-span-1 row-start-1 row-span-1">
+                <div className="">
                 </div>
 
-                {daysOfWeek.map((day, i) => (
-                        <div key={day} className={`col-start-${2 + i}} col-span-1 row-start-1 row-span-1 flex flex-col justify-center w-full h-full text-center border`}>
-                            <h1>{day}</h1>
-                            <h2>{getDate()}</h2>
-                        </div>
-
+                {daysOfWeek.map((day) => (
+                    <div className="border border-gray-950 bg-orange-200 flex flex-col justify-center text-center">
+                        <h1>{day}</h1>
+                        <h2>{getDate()}</h2>
+                    </div>
                 ))}
 
                 {[...Array(24)].map((_,i) => (
                     <>
-                        <div key={i} className={`z-0 col-start-2 col-span-7 row-start-${2 + i * 12} row-span-12 border-b`}>
+                        <div id={"time-"+i} className="">
+                            <p className="top text-center transform -translate-y-1/2">{i+":00"}</p>
                         </div>
 
-                        <div className={`col-start-1 col-span-1 row-start-${2 + i * 12} row-span-12 relative`}>
-                            <p className="top-0 transform text-center -translate-y-5/8">{i+":00"}</p>
-                        </div>
-
+                        {daysOfWeek.map((day) => (
+                            <div id={day+i} className="border">
+                            </div>
+                        ))}
                     </>
                 ))}
-            </div>
 
-            {/*
-            {isPending ? <h1>Loading</h1> :
-                convertAndFilterTimeblocks(data).map((timeblock) =>
-                    <CalendarBlock key={timeblock.id} timeblock={timeblock} containers={containers} index={calculateIndex(timeblock.startTime)} />
-                )} */}
+            </div>
         </>
     )
 }
