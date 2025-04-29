@@ -1,9 +1,6 @@
 import { getStartOfWeek } from "@/lib/utils"
-import DayContainer from "./day-container"
-import DayHeader from "./day-header"
 import CalendarBlock from "../timeblocks/calendar-timeblock"
 import { useRef } from "react"
-import TimelineLabels from "./timeline-labels"
 import { useQuery } from "@tanstack/react-query"
 import { getTimeblocks } from "../timeblocks/api"
 
@@ -58,28 +55,54 @@ export default function WeekView() {
         return timeblocks
     }
 
+    /*
     const { isPending, isError, data, error } = useQuery({
         queryKey: ['timeblocks'],
         queryFn: getTimeblocks,
       })
+        */
+
     
     return ( 
         <>
-            <div id="weekContainer" className="w-full h-full flex flex-row justify-evenly">
-                <TimelineLabels />
-                {daysOfWeek.map((day, i) =>
-                    <div key={day} className="w-full">
-                        <DayHeader day={day} date={getDate()} />
-                        <div ref={(el) => { containers.current[i] = el }} id={"day-container-" + i} className="relative border h-19/20  border-gray-50 border-solid">
-                            <DayContainer />
+            <div id="weekContainer" className="w-full h-full grid grid-cols-7 grid-rows-[20fr_repeat(288,_1fr)]">
+
+                {daysOfWeek.map((day, i) => (
+                        <div className={`col-start-${1 + i}} col-span-1 row-start-1 row-span-1 flex flex-col justify-center w-full h-full text-center border`}>
+                            <h1>{day}</h1>
+                            <h2>{getDate()}</h2>
                         </div>
+
+                ))}
+
+                {[...Array(24)].map((_,i) => (
+                    <div className={`col-start-1 col-span-7 row-start-${2 + i*12} row-span-12 w-full h-full border-b`}>
                     </div>
-                )}
+                ))}
+
+
+
+            {/*
+                {daysOfWeek.map((day,index) => {
+                    return (
+                        <div key={day} className={`border text-center row-start-1 row-end-2 col-start-${index+2} col-end-${index+3}`}>
+                            <h1>{day}</h1>
+                            <h2>{getDate()}</h2>
+                        </div>
+                    )
+                })}
+                <div className="h-max row-start-1 row-end-1 col-start-1 col-end-2 text-center">
+                    Times
+                </div>
+                */}
+
             </div>
+
+            {/*
             {isPending ? <h1>Loading</h1> :
                 convertAndFilterTimeblocks(data).map((timeblock) =>
                     <CalendarBlock key={timeblock.id} timeblock={timeblock} containers={containers} index={calculateIndex(timeblock.startTime)} />
-                )}
+                )} */}
         </>
     )
 }

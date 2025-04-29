@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { Tabs, TabsList, TabsTrigger, TabsContent} from "../ui/tabs";
 import RegisterForm from "./register-form";
 import LoginForm from "./login-form";
@@ -6,9 +5,6 @@ import LoginForm from "./login-form";
 
 
 export default function Login() {
-
-    const [error, setError] = useState<string | null>(null)
-
 
     return (
         <div className="flex flex-col justify-center align-middle">
