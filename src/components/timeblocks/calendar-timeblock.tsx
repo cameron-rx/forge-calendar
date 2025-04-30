@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useState } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { Timeblock } from "@/types/types"
 import { Button } from "../ui/button"
@@ -8,42 +8,23 @@ import { deleteTimeblock, updateTimeblock } from "./api"
 
 interface props {
     timeblock: Timeblock
-    containers: React.RefObject<(HTMLDivElement | null)[]>
-    index: number
 }
 
-export default function CalendarBlock({ timeblock, containers, index }: props) {
+export default function CalendarBlock({ timeblock}: props) {
+    // Calculates abs position, width and height for element
+    let hour = timeblock.startTime.getHours()
+    let day = timeblock.startTime.getDay()
+    let min = timeblock.startTime.getMinutes()
+    let hourDiff = timeblock.endTime.getHours() - timeblock.startTime.getHours() 
+    let minDiff = timeblock.endTime.getMinutes() - timeblock.startTime.getMinutes();
 
-    // Calculates top,left,height and width of calendar block to translate it into right posiion on screen
-    // TODO: Change number of characters displayed for name based on width
-    // TODO: Change size of name text based on height
-    let [position, setPosition] = useState({ transform: "translate(0px, 0px)", height: "0px", width: "0px" });
+    let position = {
+        width: `calc((100% - 4rem) / 7)`,
+        height: `calc((((100% - 4rem) / 24) * ${hourDiff}) + (((100% - 4rem) / 1440) * ${minDiff}))`,
+        top: `calc((((100% - 4rem) / 24) * ${hour}) + (((100% - 4rem) / 1440) * ${min}) + 4rem)`,
+        left: `calc((((100% - 4rem) / 7) * ${day}) + 4rem)`
+    }
 
-    const startHours = timeblock.startTime.getHours();
-    const startMinutes = timeblock.startTime.getMinutes()
-
-    const endHours = timeblock.endTime.getHours()
-    const endMinutes = timeblock.endTime.getMinutes();
-
-    const hourDiff = endHours - startHours
-    const minuteDiff = endMinutes - startMinutes
-
-    useEffect(() => {
-        const container = containers.current[index]
-
-        if (!container) return;
-
-        let heightPerHour = container.offsetHeight / 24
-
-        let top = container.offsetTop + (heightPerHour * startHours) + (startMinutes * (heightPerHour / 60))
-        let left = container.offsetLeft
-
-        let height = (hourDiff * heightPerHour) + (minuteDiff * (heightPerHour / 60))
-        let width = container.offsetWidth
-
-        setPosition({ transform: `translate(${left}px, ${top}px)`, height: `${height}px`, width: `${width}px` })
-    }, [containers, index])
-    
     // Create query for updating timeblock from edit form values
     const [editMode, setEditMode] = useState(false)
     const queryClient = useQueryClient();
@@ -89,8 +70,8 @@ export default function CalendarBlock({ timeblock, containers, index }: props) {
             setEditMode(false)
         }}>
             <DialogTrigger asChild>
-                <div className="z-10 absolute bg-blue-300 top-0 left-0" style={position}>
-                    <h1 className="text-left p-2 text-xl">{timeblock.name}</h1>
+                <div className="z-50 absolute bg-blue-300 border" style={position}>
+                    <h1 className="">{timeblock.name}</h1>
                 </div>
             </DialogTrigger>
             <DialogContent>

@@ -55,12 +55,18 @@ export default function WeekView() {
         return timeblocks
     }
 
-    /*
     const { isPending, isError, data, error } = useQuery({
         queryKey: ['timeblocks'],
         queryFn: getTimeblocks,
       })
-        */
+    
+
+    const day = 3;
+    const hour = 12
+    const min = 15
+    const minDiff = 45
+    const endhour = 14
+    const hourDiff = endhour - hour
 
     
     return ( 
@@ -90,6 +96,11 @@ export default function WeekView() {
                     </>
                 ))}
 
+
+                {isPending ? <h1>Loading</h1> :
+                convertAndFilterTimeblocks(data).map((timeblock) =>
+                    <CalendarBlock key={timeblock.id} timeblock={timeblock} />
+                )}
 
             </div>
         </>
