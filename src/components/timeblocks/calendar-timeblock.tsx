@@ -32,8 +32,8 @@ export default function CalendarBlock({ timeblock}: props) {
 
         return (
             <div className="z-50 absolute text-white bg-orange-300 rounded-xl shadow-neutral-600 pl-5 pt-2 shadow-md" style={position}>
-                <h1 className="text-sm text-shadow-neutral-600 text-shadow-2xs font-bold">{timeblock.name}</h1>
-                <h1 className="text-sm  text-shadow-neutral-600 text-shadow-2xs font-bold">{`${startTimeString} - ${endTimeString} `}</h1>
+                <h1 className="text-sm text-shadow-neutral-600 text-shadow-xs font-bold">{timeblock.name}</h1>
+                <h1 className="text-sm  text-shadow-neutral-600 text-shadow-xs font-bold">{`${startTimeString} - ${endTimeString} `}</h1>
             </div>
         )
     }

@@ -11,6 +11,7 @@ import { useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Timeblock } from "@/types/types";
 import { createTimeblock } from "./api";
+import { Button } from "../ui/button";
 
 export default function CreateTimeblockButton() {
     const [active, setActive] = useState(false)
@@ -39,7 +40,11 @@ export default function CreateTimeblockButton() {
 
     return (
         <Dialog open={active} onOpenChange={setActive}>
-            <DialogTrigger>Create</DialogTrigger>
+            <DialogTrigger>
+                <Button className="bg-orange-500 hover:bg-amber-600 w-9/10">
+                    Create
+                </Button>
+            </DialogTrigger>
             <DialogContent>
                 <DialogHeader>
                     <DialogTitle>New Timeblock</DialogTitle>

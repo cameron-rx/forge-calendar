@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/sidebar"
 import CreateTimeblockButton from "../timeblocks/create-timeblock"
 import { useNavigate } from "react-router"
+import { Button } from "../ui/button"
 
 // This is sample data.
 const data = {
@@ -49,26 +50,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar {...props}>
-      <SidebarHeader className="border-sidebar-border h-16 border-b">
-        <NavUser user={data.user} />
-      </SidebarHeader>
       <SidebarContent>
-        <SidebarSeparator className="mx-0" />
-        <button onClick={() => {navigate(`/app/${year}/${month}/${day}`)}}>Today</button>
-        <SidebarSeparator className="mx-0" />
         <DatePicker />
         <SidebarSeparator className="mx-0" />
         <CreateTimeblockButton />
+        <Button className="w-9/10 ml-auto mr-auto"onClick={() => {navigate(`/app/${year}/${month}/${day}`)}}>Today</Button>
       </SidebarContent>
       <SidebarFooter>
-        <SidebarMenu>
-          <SidebarMenuItem>
-            <SidebarMenuButton>
-              <Plus />
-              <span>New Calendar</span>
-            </SidebarMenuButton>
-          </SidebarMenuItem>
-        </SidebarMenu>
+        <img className="w-full h-auto" src="/forge-logo.png"></img>
+        <NavUser user={data.user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
