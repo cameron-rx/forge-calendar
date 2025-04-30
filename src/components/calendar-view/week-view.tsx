@@ -77,20 +77,20 @@ export default function WeekView() {
                 </div>
 
                 {daysOfWeek.map((day) => (
-                    <div className="border border-gray-950 bg-orange-200 flex flex-col justify-center text-center">
-                        <h1>{day}</h1>
-                        <h2>{getDate()}</h2>
+                    <div className="flex flex-col justify-center text-center">
+                        <h3 className="text-sm">{day}</h3>
+                        <h1 className="text-2xl">{getDate()}</h1>
                     </div>
                 ))}
 
                 {[...Array(24)].map((_,i) => (
                     <>
                         <div id={"time-"+i} className="">
-                            <p className="top text-center transform -translate-y-1/2">{i+":00"}</p>
+                            <p className="top text-sm text-center transform -translate-y-1/2">{i+":00"}</p>
                         </div>
 
                         {daysOfWeek.map((day) => (
-                            <div id={day+i} className="border">
+                            <div id={day+i} className="border border-neutral-200">
                             </div>
                         ))}
                     </>

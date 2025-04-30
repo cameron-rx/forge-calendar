@@ -23,6 +23,19 @@ export default function CalendarBlock({ timeblock}: props) {
         height: `calc((((100% - 4rem) / 24) * ${hourDiff}) + (((100% - 4rem) / 1440) * ${minDiff}))`,
         top: `calc((((100% - 4rem) / 24) * ${hour}) + (((100% - 4rem) / 1440) * ${min}) + 4rem)`,
         left: `calc((((100% - 4rem) / 7) * ${day}) + 4rem)`
+
+    }
+
+    const renderBlock = () => {
+        const startTimeString = timeblock.startTime.toLocaleTimeString("en-US", {hour: "2-digit", hour12: false, minute: "2-digit"})
+        const endTimeString = timeblock.endTime.toLocaleTimeString("en-US", {hour: "2-digit", hour12: false, minute: "2-digit"})
+
+        return (
+            <div className="z-50 absolute text-white bg-orange-300 rounded-xl shadow-neutral-600 pl-5 pt-2 shadow-md" style={position}>
+                <h1 className="text-sm text-shadow-neutral-600 text-shadow-2xs font-bold">{timeblock.name}</h1>
+                <h1 className="text-sm  text-shadow-neutral-600 text-shadow-2xs font-bold">{`${startTimeString} - ${endTimeString} `}</h1>
+            </div>
+        )
     }
 
     // Create query for updating timeblock from edit form values
@@ -70,9 +83,7 @@ export default function CalendarBlock({ timeblock}: props) {
             setEditMode(false)
         }}>
             <DialogTrigger asChild>
-                <div className="z-50 absolute bg-blue-300 border" style={position}>
-                    <h1 className="">{timeblock.name}</h1>
-                </div>
+                {renderBlock()}
             </DialogTrigger>
             <DialogContent>
                 {editMode ?
