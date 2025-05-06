@@ -50,7 +50,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const month = today.getMonth() + 1
   const day = today.getDate() 
 
-  let [user, setUser] = useState({email: "", name: "", avatar: "/avatars/shadcn.jpg"})
+  let [user, setUser] = useState({email: "placeholder.email.com", name: "", avatar: "/avatars/shadcn.jpg"})
 
   useEffect(() => {
     const fetchUserData = async () => {
