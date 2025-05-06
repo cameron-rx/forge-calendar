@@ -19,6 +19,7 @@ import { useNavigate } from "react-router"
 import { Button } from "../ui/button"
 import { useEffect, useState } from "react"
 import { userInfo } from "./api"
+import Forge from "../forge/forge"
 
 // This is sample data.
 const data = {
@@ -73,15 +74,18 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar {...props}>
-      <SidebarContent>
+      <SidebarHeader>
+        <NavUser user={user} />
+      </SidebarHeader>
+      <SidebarContent className="overflow-hidden">
         <DatePicker />
         <SidebarSeparator className="mx-0" />
         <CreateTimeblockButton />
-        <Button className="w-9/10 ml-auto mr-auto" onClick={() => { navigate(`/app/${year}/${month}/${day}`) }}>Today</Button>
+        <Button className="w-9/10 justify-self-center self-center" onClick={() => { navigate(`/app/${year}/${month}/${day}`) }}>Today</Button>
+        <SidebarSeparator/>
+        <Forge/>
       </SidebarContent>
       <SidebarFooter>
-        <img className="w-full h-auto" src="/forge-logo.png"></img>
-        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

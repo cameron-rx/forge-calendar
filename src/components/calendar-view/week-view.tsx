@@ -3,6 +3,7 @@ import CalendarBlock from "../timeblocks/calendar-timeblock"
 import { useRef } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { getTimeblocks } from "../timeblocks/api"
+import Forge from "../forge/forge"
 
 type Timeblock = {
     id: number
@@ -106,6 +107,7 @@ export default function WeekView() {
                     )}
 
             </div>
+
         </>
     )
 }
