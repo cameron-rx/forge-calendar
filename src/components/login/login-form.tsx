@@ -70,7 +70,7 @@ export default function LoginForm() {
                         </FormItem>
                     )}
                 />
-                <Button className="ml-auto mr-auto" type="submit">Login</Button>
+                <Button className="" type="submit">Login</Button>
             </form>
             {message ? <h1>{message}</h1> : null}
         </Form>

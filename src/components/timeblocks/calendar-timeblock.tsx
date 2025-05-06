@@ -31,7 +31,7 @@ export default function CalendarBlock({ timeblock}: props) {
         const endTimeString = timeblock.endTime.toLocaleTimeString("en-US", {hour: "2-digit", hour12: false, minute: "2-digit"})
 
         return (
-            <div className="z-50 absolute text-white bg-orange-300 rounded-xl shadow-neutral-600 pl-5 pt-2 shadow-md" style={position}>
+            <div className="z-50 absolute text-white bg-orange-300 rounded-xl shadow-neutral-600 pl-5 pt-2 shadow-md cursor-pointer" style={position}>
                 <h1 className="text-sm text-shadow-neutral-600 text-shadow-xs font-bold">{timeblock.name}</h1>
                 <h1 className="text-sm  text-shadow-neutral-600 text-shadow-xs font-bold">{`${startTimeString} - ${endTimeString} `}</h1>
             </div>
