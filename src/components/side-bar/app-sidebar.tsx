@@ -17,6 +17,8 @@ import {
 import CreateTimeblockButton from "../timeblocks/create-timeblock"
 import { useNavigate } from "react-router"
 import { Button } from "../ui/button"
+import { useEffect, useState } from "react"
+import { userInfo } from "./api"
 
 // This is sample data.
 const data = {
@@ -48,17 +50,38 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const month = today.getMonth() + 1
   const day = today.getDate() 
 
+  let [user, setUser] = useState({email: "", name: "", avatar: "/avatars/shadcn.jpg"})
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const json = await userInfo()
+        if (json) {
+          setUser({email: json.email, name: "", avatar: "/avatars/shadcn.jpg"})
+        }
+
+      } catch (error) {
+        if (error instanceof Error) {
+          console.log(error)
+        }
+      }
+    }
+
+    fetchUserData();
+  }
+    , [])
+
   return (
     <Sidebar {...props}>
       <SidebarContent>
         <DatePicker />
         <SidebarSeparator className="mx-0" />
         <CreateTimeblockButton />
-        <Button className="w-9/10 ml-auto mr-auto"onClick={() => {navigate(`/app/${year}/${month}/${day}`)}}>Today</Button>
+        <Button className="w-9/10 ml-auto mr-auto" onClick={() => { navigate(`/app/${year}/${month}/${day}`) }}>Today</Button>
       </SidebarContent>
       <SidebarFooter>
         <img className="w-full h-auto" src="/forge-logo.png"></img>
-        <NavUser user={data.user} />
+        <NavUser user={user} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

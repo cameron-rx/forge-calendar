@@ -16,3 +16,17 @@ export const logout = async () => {
     }
 
 }
+
+export const userInfo = async () => {
+    const req = new Request("http://localhost:5243/manage/info")
+    
+    const response = await fetch(req, {credentials: "include"}) 
+
+    if (response.ok) {
+        return response.json();
+    } else if (response.status == 401) {
+        throw new Error('Incorrect login details')
+    } else if (!response.ok) {
+        throw new Error('Network response was not ok')
+    }
+}
