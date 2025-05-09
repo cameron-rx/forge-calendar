@@ -24,7 +24,7 @@ export function getStartOfWeek() {
   let currentDay = getDateFromURLParams();
   let dayOfWeek = currentDay.getDay();
 
-  let date = currentDay.getDate() - dayOfWeek - 1;
+  let date = currentDay.getDate() - dayOfWeek;
   let startOfWeek = new Date(currentDay.getFullYear(), currentDay.getMonth(), date);
   return startOfWeek;
 }

@@ -6,4 +6,10 @@ export type Timeblock = {
     endTime: Date
 }
 
-
+export type TimeblockResponseDTO = {
+    id: number
+    name: string
+    location: string
+    startTime: string
+    endTime: string
+}

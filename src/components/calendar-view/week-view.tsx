@@ -1,9 +1,10 @@
-import { getStartOfWeek } from "@/lib/utils"
+import { getEndOfWeek, getStartOfWeek } from "@/lib/utils"
 import CalendarBlock from "../timeblocks/calendar-timeblock"
 import { useRef } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { getTimeblocks } from "../timeblocks/api"
 import Forge from "../forge/forge"
+import { TimeblockResponseDTO } from "@/types/types"
 
 type Timeblock = {
     id: number
@@ -17,18 +18,22 @@ type Timeblock = {
 export default function WeekView() {
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     let weekStart = getStartOfWeek()
+    console.log(`Week Start: ${weekStart.toDateString()}`)
+    let weekEnd = getEndOfWeek();
     let dayHeaderDate = new Date(weekStart)
+    console.log(`Day header date: ${dayHeaderDate.toDateString()}`)
     let weekStartUTC = Date.UTC(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate())
-    let weekEndUTC = weekStartUTC + (1000 * 60 * 60 * 24 * 7)
+    let weekEndUTC = Date.UTC(weekEnd.getFullYear(), weekEnd.getMonth(), weekEnd.getDate())
 
     function getDate() {
-        const returnDate = dayHeaderDate
+        const returnDate = new Date(dayHeaderDate)
         dayHeaderDate.setDate(dayHeaderDate.getDate() + 1)
+        console.log(`Return Date: ${returnDate}`)
         return returnDate;
     }
 
     function convertAndFilterTimeblocks(data: any) {
-        const timeblocks: Timeblock[] = data.map((t: any) => {
+        const timeblocks: Timeblock[] = data.map((t: TimeblockResponseDTO) => {
             const block: Timeblock = {
                 id: t.id,
                 name: t.name,
@@ -39,7 +44,7 @@ export default function WeekView() {
             return block
         }).filter((t: Timeblock) => {
             const utcDate = Date.UTC(t.startTime.getFullYear(), t.startTime.getMonth(), t.startTime.getDate())
-            return utcDate >= weekStartUTC && utcDate < weekEndUTC
+            return utcDate >= weekStartUTC && utcDate <= weekEndUTC
         });
 
         return timeblocks
