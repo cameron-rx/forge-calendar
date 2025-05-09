@@ -16,7 +16,8 @@ public static class ForgeEndpoints
 
             var systemPrompt = $"""
             You are an agent responsible for parsing a users text input and creating a calendar event based on its content to be placed 
-            in their personal calendar. If 24 hour time is not specifically given infer from the type of activity. Response date strings must be in iso utc format. Todays date is {DateTime.Now.ToLongDateString()}
+            in their personal calendar. If 24 hour time is not specifically given infer from the type of activity. Response date strings must be in iso format as a UTC date. Todays date is {DateTime.Now.ToLongDateString()}
+            Events can be past or present.
             The user is in a timezone with an offset of {request.TimeOffset} in minutes from utc.
             """;
 
