@@ -9,6 +9,9 @@ export const getTimeblocks = async () => {
 }
 
 export const createTimeblock = async (t: Timeblock) => {
+    console.log(`Default: ${t.startTime.toTimeString()}`)
+    console.log(`Converted: ${t.startTime.toISOString()}`)
+
     const req = new Request("http://localhost:5243/timeblock",
         {
             method: "POST",

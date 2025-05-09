@@ -12,7 +12,7 @@ function App() {
     const today = new Date(Date.now());
     const year = today.getFullYear();
     const month = today.getMonth() + 1;
-    const day = today.getDate() + 1;
+    const day = today.getDate();
 
     return (
     <>

@@ -10,7 +10,7 @@ export function getDateFromURLParams() {
   let params = useParams()
 
   if (params.year && params.month && params.day) {
-    let day = parseInt(params.day) - 1;
+    let day = parseInt(params.day);
     let month = parseInt(params.month) -1;
     let year = parseInt(params.year);
 
@@ -24,7 +24,7 @@ export function getStartOfWeek() {
   let currentDay = getDateFromURLParams();
   let dayOfWeek = currentDay.getDay();
 
-  let date = currentDay.getDate() - dayOfWeek;
+  let date = currentDay.getDate() - dayOfWeek - 1;
   let startOfWeek = new Date(currentDay.getFullYear(), currentDay.getMonth(), date);
   return startOfWeek;
 }

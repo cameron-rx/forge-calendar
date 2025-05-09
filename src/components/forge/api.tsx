@@ -1,4 +1,5 @@
 export const forgeTimeblock = async (message: string) => {
+    const timeOffset = new Date().getTimezoneOffset();
     const req = new Request(`http://localhost:5243/forge` ,
         {
             method: "POST",
@@ -8,6 +9,7 @@ export const forgeTimeblock = async (message: string) => {
             body: JSON.stringify(
                 {
                     Message: message,
+                    TimeOffset: timeOffset
                 }
             )
         })
