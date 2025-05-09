@@ -1,3 +1,3 @@
 public record AuthCheckDTO {
-    public bool isLoggedIn {get; set;}
+    public bool IsLoggedIn {get; set;}
 }

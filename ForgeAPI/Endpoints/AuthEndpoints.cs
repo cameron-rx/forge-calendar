@@ -13,10 +13,10 @@ public static class AuthEndpoints
 
             var userId = context.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            var authCheck = new AuthCheckDTO { isLoggedIn = false };
+            var authCheck = new AuthCheckDTO { IsLoggedIn = false };
 
             if (context.User.Identity?.IsAuthenticated == true) {
-                authCheck.isLoggedIn = true;
+                authCheck.IsLoggedIn = true;
             }
 
             return Results.Json(authCheck);

@@ -39,3 +39,11 @@ Content-Type: application/json
   "email": "camjr246@yahoo.co.uk",
   "password": "zxcCXZ2003#"
 }
+
+###
+POST http://localhost:5243/forge
+Content-Type: application/json
+
+{
+    "message": "Date with Sam next Tuesday at Rajput from 7-8"
+}
