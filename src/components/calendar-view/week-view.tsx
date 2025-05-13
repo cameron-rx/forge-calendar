@@ -18,17 +18,14 @@ type Timeblock = {
 export default function WeekView() {
     const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
     let weekStart = getStartOfWeek()
-    console.log(`Week Start: ${weekStart.toDateString()}`)
     let weekEnd = getEndOfWeek();
     let dayHeaderDate = new Date(weekStart)
-    console.log(`Day header date: ${dayHeaderDate.toDateString()}`)
     let weekStartUTC = Date.UTC(weekStart.getFullYear(), weekStart.getMonth(), weekStart.getDate())
     let weekEndUTC = Date.UTC(weekEnd.getFullYear(), weekEnd.getMonth(), weekEnd.getDate())
 
     function getDate() {
         const returnDate = new Date(dayHeaderDate)
         dayHeaderDate.setDate(dayHeaderDate.getDate() + 1)
-        console.log(`Return Date: ${returnDate}`)
         return returnDate;
     }
 
@@ -41,6 +38,8 @@ export default function WeekView() {
                 startTime: new Date(t.startTime),
                 endTime: new Date(t.endTime),
             }
+            console.log(`Start ${block.startTime}`)
+            console.log(`End ${block.endTime}`)
             return block
         }).filter((t: Timeblock) => {
             const utcDate = Date.UTC(t.startTime.getFullYear(), t.startTime.getMonth(), t.startTime.getDate())

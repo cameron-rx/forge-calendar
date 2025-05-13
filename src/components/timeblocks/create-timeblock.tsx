@@ -11,7 +11,6 @@ import { useState } from "react"
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Timeblock } from "@/types/types";
 import { createTimeblock } from "./api";
-import { Button } from "../ui/button";
 
 export default function CreateTimeblockButton() {
     const [active, setActive] = useState(false)
@@ -35,7 +34,8 @@ export default function CreateTimeblockButton() {
         startMinute: 0,
         endHour: 0,
         endMinute: 0,
-        date: new Date(Date.now())
+        startDate: new Date(Date.now()),
+        endDate: new Date(Date.now())
     }
 
     return (

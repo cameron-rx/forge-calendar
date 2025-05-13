@@ -5,13 +5,14 @@ import { Button } from "../ui/button"
 import TimeblockForm from "./timeblock-form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { deleteTimeblock, updateTimeblock } from "./api"
+import { getEndOfWeek } from "@/lib/utils"
 
 interface props {
     timeblock: Timeblock
 }
 
 export default function CalendarBlock({ timeblock}: props) {
-    // Calculates abs position, width and height for element
+    /*
     let hour = timeblock.startTime.getHours()
     let day = timeblock.startTime.getDay()
     let min = timeblock.startTime.getMinutes()
@@ -25,17 +26,76 @@ export default function CalendarBlock({ timeblock}: props) {
         left: `calc((((100% - 4rem) / 7) * ${day}) + 4rem)`
 
     }
+    */
 
     const renderBlock = () => {
         const startTimeString = timeblock.startTime.toLocaleTimeString("en-US", {hour: "2-digit", hour12: false, minute: "2-digit"})
         const endTimeString = timeblock.endTime.toLocaleTimeString("en-US", {hour: "2-digit", hour12: false, minute: "2-digit"})
+        const calendarBlocks = []
 
-        return (
-            <div className="z-50 absolute text-white bg-orange-300 rounded-xl shadow-neutral-600 pl-5 pt-2 shadow-md cursor-pointer" style={position}>
-                <h1 className="text-sm text-shadow-neutral-600 text-shadow-xs font-bold truncate">{timeblock.name}</h1>
-                <h1 className="text-sm  text-shadow-neutral-600 text-shadow-xs font-bold">{`${startTimeString} - ${endTimeString} `}</h1>
-            </div>
-        )
+        /*
+        curDate = startDate
+        do
+                if curDate != end date or curDate > endofWeek.date
+                    render block curDate.startTime -> 23:59
+                    curDate+=1
+                    curDate.startTime = 00:00
+                else
+                    render block curDate.startTime -> endDate.endtime
+        while curDate != endDate
+
+        */
+        let currentDateTime = new Date(timeblock.startTime)
+        let complete = false
+
+        while (!complete) {
+            if (currentDateTime.getDate() > getEndOfWeek().getDate()) {
+                complete = true
+            } else if (currentDateTime.getDate() != timeblock.endTime.getDate()) {
+                let position = {
+                    width: `calc((100% - 4rem) / 7)`,
+                    height: `calc((((100% - 4rem) / 24) * ${23 - currentDateTime.getHours()}) + (((100% - 4rem) / 1440) * ${59 - currentDateTime.getMinutes()}))`,
+                    top: `calc((((100% - 4rem) / 24) * ${currentDateTime.getHours()}) + (((100% - 4rem) / 1440) * ${currentDateTime.getMinutes()}) + 4rem)`,
+                    left: `calc((((100% - 4rem) / 7) * ${currentDateTime.getDay()}) + 4rem)`
+
+                }
+
+                calendarBlocks.push(
+                    <DialogTrigger asChild>
+                        <div className="z-50 absolute text-white bg-orange-300 rounded-xl shadow-neutral-600 pl-5 pt-2 shadow-md cursor-pointer" style={position}>
+                            <h1 className="text-sm text-shadow-neutral-600 text-shadow-xs font-bold truncate">{timeblock.name}</h1>
+                            <h1 className="text-sm  text-shadow-neutral-600 text-shadow-xs font-bold">{`${startTimeString} - ${endTimeString} `}</h1>
+                        </div>
+                    </DialogTrigger>
+                )
+
+                currentDateTime.setDate(currentDateTime.getDate() + 1)
+                currentDateTime.setHours(0, 0)
+            } else if (currentDateTime.getDate() == timeblock.endTime.getDate()) {
+                let position = {
+                    width: `calc((100% - 4rem) / 7)`,
+                    height: `calc((((100% - 4rem) / 24) * ${timeblock.endTime.getHours() - currentDateTime.getHours()}) + (((100% - 4rem) / 1440) * ${timeblock.endTime.getMinutes() - currentDateTime.getMinutes()}))`,
+                    top: `calc((((100% - 4rem) / 24) * ${currentDateTime.getHours()}) + (((100% - 4rem) / 1440) * ${currentDateTime.getMinutes()}) + 4rem)`,
+                    left: `calc((((100% - 4rem) / 7) * ${currentDateTime.getDay()}) + 4rem)`
+
+                }
+
+                calendarBlocks.push(
+                    <DialogTrigger asChild>
+                        <div className="z-50 absolute text-white bg-orange-300 rounded-xl shadow-neutral-600 pl-5 pt-2 shadow-md cursor-pointer" style={position}>
+                            <h1 className="text-sm text-shadow-neutral-600 text-shadow-xs font-bold truncate">{timeblock.name}</h1>
+                            <h1 className="text-sm  text-shadow-neutral-600 text-shadow-xs font-bold">{`${startTimeString} - ${endTimeString} `}</h1>
+                        </div>
+                    </DialogTrigger>
+                )
+
+                complete = true;
+            }
+
+        }
+
+        return calendarBlocks
+
     }
 
     // Create query for updating timeblock from edit form values
@@ -72,7 +132,8 @@ export default function CalendarBlock({ timeblock}: props) {
         startMinute: timeblock.startTime.getMinutes(),
         endHour: timeblock.endTime.getHours(),
         endMinute: timeblock.endTime.getMinutes(),
-        date: new Date(timeblock.startTime.getFullYear(),timeblock.startTime.getMonth(),timeblock.startTime.getDate())
+        startDate: new Date(timeblock.startTime.getFullYear(),timeblock.startTime.getMonth(),timeblock.startTime.getDate()),
+        endDate: new Date(timeblock.endTime.getFullYear(),timeblock.endTime.getMonth(),timeblock.endTime.getDate())
     }
 
     const [open, setOpen] = useState(false)
@@ -82,9 +143,7 @@ export default function CalendarBlock({ timeblock}: props) {
             setOpen(!open)
             setEditMode(false)
         }}>
-            <DialogTrigger asChild>
-                {renderBlock()}
-            </DialogTrigger>
+            {renderBlock()}
             <DialogContent>
                 {editMode ?
                     <>

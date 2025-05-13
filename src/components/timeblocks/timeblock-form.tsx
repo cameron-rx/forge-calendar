@@ -25,14 +25,15 @@ const formSchema = z.object({
   location: z.string().min(1).max(50),
   startHour: z.coerce.number(),
   startMinute: z.coerce.number(),
+  startDate: z.date(),
   endHour: z.coerce.number(),
   endMinute: z.coerce.number(),
-  date: z.date(),
+  endDate: z.date(),
 })
 
 interface props {
   onSubmitFn: (t: Timeblock) => void
-  defaults: {name:string, location: string, startHour: number, startMinute: number, endHour: number, endMinute: number, date: Date}
+  defaults: {name:string, location: string, startHour: number, startMinute: number, endHour: number, endMinute: number, startDate: Date, endDate: Date}
 }
 export default function TimeblockForm({onSubmitFn, defaults}: props) {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,16 +43,17 @@ export default function TimeblockForm({onSubmitFn, defaults}: props) {
       location: defaults.location,
       startHour: defaults.startHour,
       startMinute: defaults.startMinute,
+      startDate: defaults.startDate,
       endHour: defaults.endHour,
       endMinute: defaults.endMinute,
-      date: defaults.date
+      endDate: defaults.endDate
     },
   })
 
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const startDate = new Date(values.date.getFullYear(), values.date.getMonth(), values.date.getDate(), values.startHour, values.startMinute)
-    const endDate = new Date(values.date.getFullYear(), values.date.getMonth(), values.date.getDate(), values.endHour, values.endMinute)
+    const startDate = new Date(values.startDate.getFullYear(), values.startDate.getMonth(), values.startDate.getDate(), values.startHour, values.startMinute)
+    const endDate = new Date(values.endDate.getFullYear(), values.endDate.getMonth(), values.endDate.getDate(), values.endHour, values.endMinute)
     const timeblock: Timeblock = {id: 0, name: values.name, location: values.location, startTime: startDate, endTime: endDate};
     onSubmitFn(timeblock)
   }
@@ -129,6 +131,44 @@ export default function TimeblockForm({onSubmitFn, defaults}: props) {
             )}
           />
         </div>
+        <FormField
+          control={form.control}
+          name="startDate"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Start Date</FormLabel>
+              <Popover modal={true}>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-[240px] pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value ? (
+                        field.value.toLocaleDateString()
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
         <FormLabel>End Time</FormLabel>
         <div className="flex row ">
           <FormField
@@ -176,10 +216,10 @@ export default function TimeblockForm({onSubmitFn, defaults}: props) {
         </div>
         <FormField
           control={form.control}
-          name="date"
+          name="endDate"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Date</FormLabel>
+              <FormLabel>End Date</FormLabel>
               <Popover modal={true}>
                 <PopoverTrigger asChild>
                   <FormControl>
