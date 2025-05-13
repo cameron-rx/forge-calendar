@@ -1,9 +1,7 @@
 import { getEndOfWeek, getStartOfWeek } from "@/lib/utils"
 import CalendarBlock from "../timeblocks/calendar-timeblock"
-import { useRef } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { getTimeblocks } from "../timeblocks/api"
-import Forge from "../forge/forge"
 import { TimeblockResponseDTO } from "@/types/types"
 
 type Timeblock = {
@@ -42,8 +40,9 @@ export default function WeekView() {
             console.log(`End ${block.endTime}`)
             return block
         }).filter((t: Timeblock) => {
-            const utcDate = Date.UTC(t.startTime.getFullYear(), t.startTime.getMonth(), t.startTime.getDate())
-            return utcDate >= weekStartUTC && utcDate <= weekEndUTC
+            const startUTCDate = Date.UTC(t.startTime.getFullYear(), t.startTime.getMonth(), t.startTime.getDate())
+            const endUTCDate = Date.UTC(t.endTime.getFullYear(), t.endTime.getMonth(), t.endTime.getDate())
+            return (startUTCDate >= weekStartUTC && startUTCDate <= weekEndUTC) || (endUTCDate >= weekStartUTC && endUTCDate <= weekEndUTC)
         });
 
         return timeblocks

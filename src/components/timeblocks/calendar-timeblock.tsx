@@ -5,7 +5,8 @@ import { Button } from "../ui/button"
 import TimeblockForm from "./timeblock-form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { deleteTimeblock, updateTimeblock } from "./api"
-import { getEndOfWeek } from "@/lib/utils"
+import { getEndOfWeek, getStartOfWeek } from "@/lib/utils"
+import { time } from "console"
 
 interface props {
     timeblock: Timeblock
@@ -33,19 +34,16 @@ export default function CalendarBlock({ timeblock}: props) {
         const endTimeString = timeblock.endTime.toLocaleTimeString("en-US", {hour: "2-digit", hour12: false, minute: "2-digit"})
         const calendarBlocks = []
 
-        /*
-        curDate = startDate
-        do
-                if curDate != end date or curDate > endofWeek.date
-                    render block curDate.startTime -> 23:59
-                    curDate+=1
-                    curDate.startTime = 00:00
-                else
-                    render block curDate.startTime -> endDate.endtime
-        while curDate != endDate
-
-        */
         let currentDateTime = new Date(timeblock.startTime)
+        const startOfWeek = getStartOfWeek()
+
+        // Incase calendar block starts before week does only render blocks in current week
+        if (currentDateTime < startOfWeek) {
+            currentDateTime = new Date(startOfWeek)
+            currentDateTime.setHours(0)
+            currentDateTime.setMinutes(0)
+        }
+
         let complete = false
 
         while (!complete) {
