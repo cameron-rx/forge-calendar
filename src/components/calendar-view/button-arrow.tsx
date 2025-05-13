@@ -16,7 +16,7 @@ export function ButtonArrow({direction, offset}:props) {
 
     const newYear = currentWeek.getFullYear();
     const newMonth = currentWeek.getMonth() + 1;
-    const newDay = currentWeek.getDate() + 1;
+    const newDay = currentWeek.getDate();
 
 
     function getDirection() {

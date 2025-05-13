@@ -29,6 +29,41 @@ const formSchema = z.object({
   endHour: z.coerce.number(),
   endMinute: z.coerce.number(),
   endDate: z.date(),
+}).superRefine((data, ctx) => {
+  const startTime = new Date(data.startDate.getFullYear(), data.startDate.getMonth(), data.startDate.getDate(), data.startHour, data.startMinute)
+  const endTime = new Date(data.endDate.getFullYear(), data.endDate.getMonth(), data.endDate.getDate(), data.endHour, data.endMinute)
+  if (endTime < startTime) {
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['startDate'], // first path
+      message: "",
+    });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['startHour'], // first path
+      message: "",
+    });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['startMinute'], // first path
+      message: "",
+    });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['endHour'], // first path
+      message: "",
+    });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      path: ['endMinute'], // first path
+      message: "",
+    });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      message: "Make sure your start time comes after your end time.",
+      path: ['endDate'], // first path
+    });
+  }
 })
 
 interface props {
