@@ -11,11 +11,22 @@ public static class TimeBlockEndpoints
             var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Results.Unauthorized();
 
-            var timeblock = await timeBlockService.Create(requestTimeblock, userId);
-            return Results.Created($"/timeblock/{timeblock.Id}", timeblock);
+            try
+            {
+                var timeblock = await timeBlockService.Create(requestTimeblock, userId);
+                return Results.Created($"/timeblock/{timeblock.Id}", timeblock);
+            }
+            catch (System.Exception exception)
+            {
+                return Results.Conflict(new
+                {
+                    error = "Conflicting Timeblocks",
+                    message = exception.Message
+                });
+            }
         });
 
-        group.MapGet("/", async (ITimeBlockService  timeBlockService, ClaimsPrincipal user) =>
+        group.MapGet("/", async (ITimeBlockService timeBlockService, ClaimsPrincipal user) =>
         {
             var userId = user.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (userId == null) return Results.Unauthorized();
@@ -40,8 +51,8 @@ public static class TimeBlockEndpoints
 
             try
             {
-               var patchedTimeBlock = await timeBlockService.Update(userId, id,requestTimeblock);
-               return Results.Ok(patchedTimeBlock);
+                var patchedTimeBlock = await timeBlockService.Update(userId, id, requestTimeblock);
+                return Results.Ok(patchedTimeBlock);
             }
             catch (System.Exception exception)
             {

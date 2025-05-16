@@ -6,4 +6,5 @@ public interface ITimeBlockRespository
     Task RemoveTimeBlock(string userId, int Id);
     Task<TimeBlock> UpdateTimeBlock(string userId, int oldItemId, TimeBlock newItem);
     Task<bool> Exists(string userId, int timeblockId);
+    Task<bool> CheckConflictingBlocks(TimeBlock item);
 }

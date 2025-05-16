@@ -1,7 +1,6 @@
 using System.Security.Claims;
 using System.Text.Json;
 using dotenv.net;
-using Microsoft.AspNetCore.Routing.Template;
 using OpenAI.Chat;
 public static class ForgeEndpoints
 {
@@ -15,10 +14,11 @@ public static class ForgeEndpoints
             if (userId == null) return Results.Unauthorized();
 
             var systemPrompt = $"""
-            You are an agent responsible for parsing a users text input and creating a calendar event based on its content to be placed 
+            You are an agent responsible for parsing a users text input and creating calendar events based on its content to be placed
             in their personal calendar. If 24 hour time is not specifically given infer from the type of activity. Response date strings must be in iso format as a UTC date. Todays date is {DateTime.Now.ToLongDateString()}
             Events can be past or present.
             The user is in a timezone with an offset of {request.TimeOffset} in minutes from utc.
+            If you cannot interpret any events return an empty array.
             """;
 
             Console.WriteLine(systemPrompt);
@@ -75,16 +75,27 @@ public static class ForgeEndpoints
             Console.WriteLine($"StartTime: {rootElement.GetProperty("StartTime")}");
             Console.WriteLine($"EndTime: {rootElement.GetProperty("EndTime")}");
 
-            TimeBlockRequestDTO timeblockDTO = new() 
-            { 
+            TimeBlockRequestDTO timeblockDTO = new()
+            {
                 Name = rootElement.GetProperty("Name").GetString(),
                 Location = rootElement.GetProperty("Location").GetString(),
                 StartTime = rootElement.GetProperty("StartTime").GetDateTime(),
                 EndTime = rootElement.GetProperty("EndTime").GetDateTime()
             };
 
-            var timeblock = await timeBlockService.Create(timeblockDTO, userId);
-            return Results.Created($"/timeblock/{timeblock.Id}", timeblock);
+            try
+            {
+                var timeblock = await timeBlockService.Create(timeblockDTO, userId);
+                return Results.Created($"/timeblock/{timeblock.Id}", timeblock);
+            }
+            catch (System.Exception exception)
+            {
+                return Results.Conflict(new
+                {
+                    error = "Conflicting Timeblocks",
+                    message = exception.Message
+                });
+            }
         });
     }
 }

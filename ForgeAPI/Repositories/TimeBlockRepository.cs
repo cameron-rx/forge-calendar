@@ -25,7 +25,8 @@ public class TimeBlockRepository : ITimeBlockRespository
         await Context.Timeblocks.AddAsync(item);
         await Context.SaveChangesAsync();
     }
-    public async Task RemoveTimeBlock(string userId, int timeblockId){
+    public async Task RemoveTimeBlock(string userId, int timeblockId)
+    {
         var item = await Get(userId, timeblockId);
         if (item != null)
         {
@@ -38,7 +39,7 @@ public class TimeBlockRepository : ITimeBlockRespository
         var timeblock = await Get(userId, oldItemId);
         timeblock.Name = newItem.Name == "" ? timeblock.Name : newItem.Name;
         timeblock.Location = newItem.Location == "" ? timeblock.Location : newItem.Location;
-        timeblock.StartTime = newItem.StartTime == default(DateTime) ? timeblock.StartTime : newItem.StartTime ;
+        timeblock.StartTime = newItem.StartTime == default(DateTime) ? timeblock.StartTime : newItem.StartTime;
         timeblock.EndTime = newItem.EndTime == default(DateTime) ? timeblock.EndTime : newItem.EndTime;
 
         await Context.SaveChangesAsync();
@@ -49,7 +50,11 @@ public class TimeBlockRepository : ITimeBlockRespository
 
     public async Task<bool> Exists(string userId, int timeblockId)
     {
-       return  await Context.Timeblocks.AnyAsync(t => t.Id == timeblockId && t.UserId == userId);
+        return await Context.Timeblocks.AnyAsync(t => t.Id == timeblockId && t.UserId == userId);
+    }
+
+    public async Task<bool> CheckConflictingBlocks(TimeBlock item)
+    {
+        return await Context.Timeblocks.AnyAsync(t => t.StartTime < item.EndTime && item.StartTime < t.EndTime);
     }
 }
-
