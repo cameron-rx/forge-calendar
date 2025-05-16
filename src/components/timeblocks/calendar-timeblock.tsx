@@ -180,6 +180,7 @@ export default function CalendarBlock({ timeblock }: props) {
       onOpenChange={() => {
         setOpen(!open);
         setEditMode(false);
+        setErrorMessage("");
       }}
     >
       {renderBlocks()}

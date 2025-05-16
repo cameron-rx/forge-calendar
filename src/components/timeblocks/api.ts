@@ -55,8 +55,13 @@ export const updateTimeblock = async (t: Timeblock) => {
   });
 
   const response = await fetch(req, { credentials: "include" });
+
   if (!response.ok) {
-    throw new Error("Network response was not ok");
+    if (response.status == 409) {
+      throw new Error("There exsits a timeblock in this timespan already");
+    } else {
+      throw new Error("Network response was not ok");
+    }
   }
 
   return response.json();
