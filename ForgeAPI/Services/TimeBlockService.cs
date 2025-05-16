@@ -17,7 +17,7 @@ public class TimeBlockService : ITimeBlockService
 
         if (isConflicting)
         {
-            throw new Exception("Timeblock already exists in this timespan");
+            throw new ConflictingTimeblockException();
         }
 
         await timeBlockRespository.AddTimeBlock(timeblock);
@@ -47,6 +47,13 @@ public class TimeBlockService : ITimeBlockService
             timeblock.Location = timeblockDTO.Location;
             timeblock.StartTime = timeblockDTO.StartTime;
             timeblock.EndTime = timeblockDTO.EndTime;
+
+
+            var isConflicting = await timeBlockRespository.CheckConflictingBlocks(timeblock);
+            if (isConflicting)
+            {
+                throw new ConflictingTimeblockException();
+            }
 
             TimeBlock updatedTimeblock = await timeBlockRespository.UpdateTimeBlock(userId, timeblockId, timeblock);
 

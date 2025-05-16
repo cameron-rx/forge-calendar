@@ -16,7 +16,7 @@ public static class TimeBlockEndpoints
                 var timeblock = await timeBlockService.Create(requestTimeblock, userId);
                 return Results.Created($"/timeblock/{timeblock.Id}", timeblock);
             }
-            catch (System.Exception exception)
+            catch (ConflictingTimeblockException exception)
             {
                 return Results.Conflict(new
                 {
@@ -53,6 +53,10 @@ public static class TimeBlockEndpoints
             {
                 var patchedTimeBlock = await timeBlockService.Update(userId, id, requestTimeblock);
                 return Results.Ok(patchedTimeBlock);
+            }
+            catch (ConflictingTimeblockException exception)
+            {
+                return Results.Conflict(exception.Message);
             }
             catch (System.Exception exception)
             {
