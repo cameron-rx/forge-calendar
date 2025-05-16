@@ -19,6 +19,8 @@ interface props {
 }
 
 export default function CalendarBlock({ timeblock }: props) {
+  const [errorMessage, setErrorMessage] = useState("");
+
   const createBlock = (
     day: number,
     hour: number,
@@ -127,8 +129,12 @@ export default function CalendarBlock({ timeblock }: props) {
     onSuccess: (data) => {
       console.log("Updated timeblock");
       console.log(data);
+      setErrorMessage("");
       queryClient.invalidateQueries({ queryKey: ["timeblocks"] });
       setEditMode(false);
+    },
+    onError: (error) => {
+      setErrorMessage(error.message);
     },
   });
 
@@ -224,6 +230,7 @@ export default function CalendarBlock({ timeblock }: props) {
             </Button>
           </>
         )}
+        <h1>{errorMessage}</h1>
       </DialogContent>
     </Dialog>
   );
