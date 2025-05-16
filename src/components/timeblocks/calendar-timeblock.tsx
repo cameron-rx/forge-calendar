@@ -19,23 +19,45 @@ interface props {
 }
 
 export default function CalendarBlock({ timeblock }: props) {
-  /*
-    let hour = timeblock.startTime.getHours()
-    let day = timeblock.startTime.getDay()
-    let min = timeblock.startTime.getMinutes()
-    let hourDiff = timeblock.endTime.getHours() - timeblock.startTime.getHours()
-    let minDiff = timeblock.endTime.getMinutes() - timeblock.startTime.getMinutes();
+  const createBlock = (
+    day: number,
+    hour: number,
+    min: number,
+    hourDiff: number,
+    minDiff: number,
+    name: string,
+    timespan: string,
+  ) => {
+    const position = {
+      width: `calc((100% - 4rem) / 7)`,
+      height: `calc((((100% - 4rem) / 24) * ${hourDiff}) + (((100% - 4rem) / 1440) * ${minDiff}))`,
+      top: `calc((((100% - 4rem) / 24) * ${hour}) + (((100% - 4rem) / 1440) * ${min}) + 4rem)`,
+      left: `calc((((100% - 4rem) / 7) * ${day}) + 4rem)`,
+    };
+    return (
+      <DialogTrigger asChild>
+        <div
+          className="z-50 absolute text-white bg-orange-300 rounded-xl shadow-neutral-600 pl-5 pt-2 shadow-md cursor-pointer"
+          style={position}
+        >
+          <>
+            {minDiff < 45 && hourDiff <= 1 ? null : (
+              <h1 className="text-sm text-shadow-neutral-600 text-shadow-xs font-bold truncate">
+                {name}
+              </h1>
+            )}
+            {hourDiff <= 1 ? null : (
+              <h1 className="text-sm  text-shadow-neutral-600 text-shadow-xs font-bold">
+                {timespan}
+              </h1>
+            )}
+          </>
+        </div>
+      </DialogTrigger>
+    );
+  };
 
-    let position = {
-        width: `calc((100% - 4rem) / 7)`,
-        height: `calc((((100% - 4rem) / 24) * ${hourDiff}) + (((100% - 4rem) / 1440) * ${minDiff}))`,
-        top: `calc((((100% - 4rem) / 24) * ${hour}) + (((100% - 4rem) / 1440) * ${min}) + 4rem)`,
-        left: `calc((((100% - 4rem) / 7) * ${day}) + 4rem)`
-
-    }
-    */
-
-  const renderBlock = () => {
+  const renderBlocks = () => {
     const startTimeString = timeblock.startTime.toLocaleTimeString("en-US", {
       hour: "2-digit",
       hour12: false,
@@ -64,72 +86,34 @@ export default function CalendarBlock({ timeblock }: props) {
       if (currentDateTime.getDate() > getEndOfWeek().getDate()) {
         complete = true;
       } else if (currentDateTime.getDate() != timeblock.endTime.getDate()) {
-        const position = {
-          width: `calc((100% - 4rem) / 7)`,
-          height: `calc((((100% - 4rem) / 24) * ${23 - currentDateTime.getHours()}) + (((100% - 4rem) / 1440) * ${59 - currentDateTime.getMinutes()}))`,
-          top: `calc((((100% - 4rem) / 24) * ${currentDateTime.getHours()}) + (((100% - 4rem) / 1440) * ${currentDateTime.getMinutes()}) + 4rem)`,
-          left: `calc((((100% - 4rem) / 7) * ${currentDateTime.getDay()}) + 4rem)`,
-        };
-
         calendarBlocks.push(
-          <DialogTrigger asChild>
-            <div
-              className="z-50 absolute text-white bg-orange-300 rounded-xl shadow-neutral-600 pl-5 pt-2 shadow-md cursor-pointer"
-              style={position}
-            >
-              <>
-                {59 - currentDateTime.getMinutes() < 45 &&
-                23 - currentDateTime.getHours() <= 1 ? null : (
-                  <h1 className="text-sm text-shadow-neutral-600 text-shadow-xs font-bold truncate">
-                    {timeblock.name}
-                  </h1>
-                )}
-                {23 - currentDateTime.getHours() <= 1 ? null : (
-                  <h1 className="text-sm  text-shadow-neutral-600 text-shadow-xs font-bold">{`${startTimeString} - ${endTimeString} `}</h1>
-                )}
-              </>
-            </div>
-          </DialogTrigger>,
+          createBlock(
+            currentDateTime.getDay(),
+            currentDateTime.getHours(),
+            currentDateTime.getMinutes(),
+            23 - currentDateTime.getHours(),
+            59 - currentDateTime.getMinutes(),
+            timeblock.name,
+            `${startTimeString} - ${endTimeString}`,
+          ),
         );
-
         currentDateTime.setDate(currentDateTime.getDate() + 1);
         currentDateTime.setHours(0, 0);
       } else if (currentDateTime.getDate() == timeblock.endTime.getDate()) {
-        const position = {
-          width: `calc((100% - 4rem) / 7)`,
-          height: `calc((((100% - 4rem) / 24) * ${timeblock.endTime.getHours() - currentDateTime.getHours()}) + (((100% - 4rem) / 1440) * ${timeblock.endTime.getMinutes() - currentDateTime.getMinutes()}))`,
-          top: `calc((((100% - 4rem) / 24) * ${currentDateTime.getHours()}) + (((100% - 4rem) / 1440) * ${currentDateTime.getMinutes()}) + 4rem)`,
-          left: `calc((((100% - 4rem) / 7) * ${currentDateTime.getDay()}) + 4rem)`,
-        };
-
         calendarBlocks.push(
-          <DialogTrigger asChild>
-            <div
-              className="z-50 absolute text-white bg-orange-300 rounded-xl shadow-neutral-600 pl-5 pt-2 shadow-md cursor-pointer"
-              style={position}
-            >
-              <>
-                {timeblock.endTime.getMinutes() - currentDateTime.getMinutes() <
-                  45 &&
-                timeblock.endTime.getHours() - currentDateTime.getHours() <=
-                  1 ? null : (
-                  <h1 className="text-sm text-shadow-neutral-600 text-shadow-xs font-bold truncate">
-                    {timeblock.name}
-                  </h1>
-                )}
-                {timeblock.endTime.getHours() - currentDateTime.getHours() <=
-                1 ? null : (
-                  <h1 className="text-sm  text-shadow-neutral-600 text-shadow-xs font-bold">{`${startTimeString} - ${endTimeString} `}</h1>
-                )}
-              </>
-            </div>
-          </DialogTrigger>,
+          createBlock(
+            currentDateTime.getDay(),
+            currentDateTime.getHours(),
+            currentDateTime.getMinutes(),
+            timeblock.endTime.getHours() - currentDateTime.getHours(),
+            timeblock.endTime.getMinutes() - currentDateTime.getMinutes(),
+            timeblock.name,
+            `${startTimeString} - ${endTimeString}`,
+          ),
         );
-
         complete = true;
       }
     }
-
     return calendarBlocks;
   };
 
@@ -192,7 +176,7 @@ export default function CalendarBlock({ timeblock }: props) {
         setEditMode(false);
       }}
     >
-      {renderBlock()}
+      {renderBlocks()}
       <DialogContent>
         {editMode ? (
           <>
