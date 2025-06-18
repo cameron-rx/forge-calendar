@@ -1,47 +1,16 @@
-import { getEndOfWeek, getStartOfWeek } from "@/lib/utils";
-import CalendarBlock from "../timeblocks/calendar-timeblock";
+import { getDateFromURLParams } from "@/lib/utils";
+import { Timeblock, TimeblockResponseDTO } from "@/types/types";
 import { useQuery } from "@tanstack/react-query";
 import { getTimeblocks } from "../timeblocks/api";
-import { TimeblockResponseDTO } from "@/types/types";
+import CalendarBlock from "../timeblocks/calendar-timeblock";
 
-type Timeblock = {
-  id: number;
-  name: string;
-  location: string;
-  startTime: Date;
-  endTime: Date;
-};
-
-// TODO: Will have to add offset to utc dates in order to convert them to users local time for filtering and displaying
-export default function WeekView() {
-  const daysOfWeek = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday",
-  ];
-  const weekStart = getStartOfWeek();
-  const weekEnd = getEndOfWeek();
-  const dayHeaderDate = new Date(weekStart);
-  const weekStartUTC = Date.UTC(
-    weekStart.getFullYear(),
-    weekStart.getMonth(),
-    weekStart.getDate(),
+export default function DayView() {
+  let date = getDateFromURLParams();
+  const dateUTC = Date.UTC(
+    date.getFullYear(),
+    date.getMonth(),
+    date.getDate(),
   );
-  const weekEndUTC = Date.UTC(
-    weekEnd.getFullYear(),
-    weekEnd.getMonth(),
-    weekEnd.getDate(),
-  );
-
-  function getDate() {
-    const returnDate = new Date(dayHeaderDate);
-    dayHeaderDate.setDate(dayHeaderDate.getDate() + 1);
-    return returnDate;
-  }
 
   function convertAndFilterTimeblocks(data: any) {
     const timeblocks: Timeblock[] = data
@@ -69,37 +38,38 @@ export default function WeekView() {
           t.endTime.getDate(),
         );
         return (
-          (startUTCDate >= weekStartUTC && startUTCDate <= weekEndUTC) ||
-          (endUTCDate >= weekStartUTC && endUTCDate <= weekEndUTC)
+          (startUTCDate >= dateUTC && startUTCDate <= dateUTC) ||
+          (endUTCDate >= dateUTC && endUTCDate <= dateUTC)
         );
       });
 
     return timeblocks;
   }
 
-  function createDayHeaders(day: Date) {
+  function createDayHeader() {
     const today = new Date(Date.now());
 
+
     if (
-      day.getDate() == today.getDate() &&
-      day.getMonth() == today.getMonth() &&
-      day.getFullYear() == today.getFullYear()
+      date.getDate() == today.getDate() &&
+      date.getMonth() == today.getMonth() &&
+      date.getFullYear() == today.getFullYear()
     ) {
       return (
         <div className="flex flex-col justify-center text-center bg-orange-500 text-white">
           <h3 className="text-sm">
-            {day.toLocaleDateString("en-US", { weekday: "long" })}
+            {date.toLocaleDateString("en-US", { weekday: "long" })}
           </h3>
-          <h1 className="text-2xl">{day.getDate()}</h1>
+          <h1 className="text-2xl">{date.getDate()}</h1>
         </div>
       );
     } else {
       return (
         <div className="flex flex-col justify-center text-center">
           <h3 className="text-sm">
-            {day.toLocaleDateString("en-US", { weekday: "long" })}
+            {date.toLocaleDateString("en-US", { weekday: "long" })}
           </h3>
-          <h1 className="text-2xl">{day.getDate()}</h1>
+          <h1 className="text-2xl">{date.getDate()}</h1>
         </div>
       );
     }
@@ -113,12 +83,12 @@ export default function WeekView() {
   return (
     <>
       <div
-        id="weekContainer"
-        className="relative w-full h-full grid grid-cols-[4rem_repeat(7,_1fr)] grid-rows-[4rem_repeat(24,_1fr)] "
+        id="dayContainer"
+        className="relative w-full h-full grid grid-cols-[4rem_repeat(1,_1fr)] grid-rows-[4rem_repeat(24,_1fr)] "
       >
         <div className=""></div>
 
-        {daysOfWeek.map(() => createDayHeaders(getDate()))}
+        {createDayHeader()}
 
         {[...Array(24)].map((_, i) => (
           <>
@@ -128,9 +98,7 @@ export default function WeekView() {
               </p>
             </div>
 
-            {daysOfWeek.map((day) => (
-              <div id={day + i} className="border border-neutral-200"></div>
-            ))}
+            <div id="1" className="border border-neutral-200"></div>
           </>
         ))}
 
@@ -145,3 +113,4 @@ export default function WeekView() {
     </>
   );
 }
+

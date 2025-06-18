@@ -1,8 +1,8 @@
-import * as React from "react"
-import { Plus } from "lucide-react"
+import * as React from "react";
+import { Plus } from "lucide-react";
 
-import { DatePicker } from "@/components/side-bar/date-picker"
-import { NavUser } from "@/components/side-bar/nav-user"
+import { DatePicker } from "@/components/side-bar/date-picker";
+import { NavUser } from "@/components/side-bar/nav-user";
 import {
   Sidebar,
   SidebarContent,
@@ -13,13 +13,13 @@ import {
   SidebarMenuItem,
   SidebarRail,
   SidebarSeparator,
-} from "@/components/ui/sidebar"
-import CreateTimeblockButton from "../timeblocks/create-timeblock"
-import { useNavigate } from "react-router"
-import { Button } from "../ui/button"
-import { useEffect, useState } from "react"
-import { userInfo } from "./api"
-import Forge from "../forge/forge"
+} from "@/components/ui/sidebar";
+import CreateTimeblockButton from "../timeblocks/create-timeblock";
+import { useNavigate } from "react-router";
+import { Button } from "../ui/button";
+import { useEffect, useState } from "react";
+import { userInfo } from "./api";
+import Forge from "../forge/forge";
 
 // This is sample data.
 const data = {
@@ -42,52 +42,64 @@ const data = {
       items: ["Travel", "Reminders", "Deadlines"],
     },
   ],
-}
+};
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   let navigate = useNavigate();
-  const today = new Date(Date.now())
-  const year = today.getFullYear()
-  const month = today.getMonth() + 1
-  const day = today.getDate() 
+  const today = new Date(Date.now());
+  const year = today.getFullYear();
+  const month = today.getMonth() + 1;
+  const day = today.getDate();
 
-  let [user, setUser] = useState({email: "placeholder.email.com", name: "", avatar: "/avatars/shadcn.jpg"})
+  let [user, setUser] = useState({
+    email: "placeholder.email.com",
+    name: "",
+    avatar: "/avatars/shadcn.jpg",
+  });
 
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const json = await userInfo()
+        const json = await userInfo();
         if (json) {
-          setUser({email: json.email, name: "", avatar: "/avatars/shadcn.jpg"})
+          setUser({
+            email: json.email,
+            name: "",
+            avatar: "/avatars/shadcn.jpg",
+          });
         }
-
       } catch (error) {
         if (error instanceof Error) {
-          console.log(error)
+          console.log(error);
         }
       }
-    }
+    };
 
     fetchUserData();
-  }
-    , [])
+  }, []);
 
   return (
     <Sidebar {...props}>
       <SidebarHeader>
         <NavUser user={user} />
       </SidebarHeader>
-      <SidebarContent className="overflow-hidden">
+      <SidebarContent className="overflow-x-hidden">
         <DatePicker />
         <SidebarSeparator className="mx-0" />
         <CreateTimeblockButton />
-        <Button className="w-9/10 justify-self-center self-center" onClick={() => { navigate(`/app/${year}/${month}/${day}`) }}>Today</Button>
-        <SidebarSeparator/>
-        <Forge/>
+        <Button
+          className="w-9/10 justify-self-center self-center"
+          onClick={() => {
+            navigate(`/app/${year}/${month}/${day}`);
+          }}
+        >
+          Today
+        </Button>
+        <SidebarSeparator />
+        <Forge />
       </SidebarContent>
-      <SidebarFooter>
-      </SidebarFooter>
+      <SidebarFooter></SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }
