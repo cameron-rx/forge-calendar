@@ -138,7 +138,7 @@ export default function WeekView() {
           <h1>Loading</h1>
         ) : (
           convertAndFilterTimeblocks(data).map((timeblock) => (
-            <CalendarBlock key={timeblock.id} timeblock={timeblock} />
+            <CalendarBlock key={timeblock.id} timeblock={timeblock} view="Week" />
           ))
         )}
       </div>

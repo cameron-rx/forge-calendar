@@ -12,14 +12,22 @@ import { Button } from "../ui/button";
 import TimeblockForm from "./timeblock-form";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { deleteTimeblock, updateTimeblock } from "./api";
-import { getEndOfWeek, getStartOfWeek } from "@/lib/utils";
+import { getDateFromURLParams, getEndOfWeek, getStartOfWeek } from "@/lib/utils";
 
 interface props {
   timeblock: Timeblock;
+  view: String;
 }
 
-export default function CalendarBlock({ timeblock }: props) {
+export default function CalendarBlock({ timeblock, view }: props) {
   const [errorMessage, setErrorMessage] = useState("");
+
+  let offset = 0
+  if (view === "Week") {
+    offset = 7;
+  } else if (view === "Day") {
+    offset = 1;
+  }
 
   const createBlock = (
     day: number,
@@ -30,12 +38,14 @@ export default function CalendarBlock({ timeblock }: props) {
     name: string,
     timespan: string,
   ) => {
+
     const position = {
-      width: `calc((100% - 4rem) / 7)`,
+      width: `calc((100% - 4rem) / ${offset})`,
       height: `calc((((100% - 4rem) / 24) * ${hourDiff}) + (((100% - 4rem) / 1440) * ${minDiff}))`,
       top: `calc((((100% - 4rem) / 24) * ${hour}) + (((100% - 4rem) / 1440) * ${min}) + 4rem)`,
-      left: `calc((((100% - 4rem) / 7) * ${day}) + 4rem)`,
+      left: `calc((((100% - 4rem) / ${offset}) * ${day}) + 4rem)`,
     };
+
     return (
       <DialogTrigger asChild>
         <div
@@ -82,15 +92,36 @@ export default function CalendarBlock({ timeblock }: props) {
       currentDateTime.setMinutes(0);
     }
 
+    // For day view start on current day
+    if  (view === "Day") {
+      if (currentDateTime < getDateFromURLParams()) {
+        currentDateTime = new Date(getDateFromURLParams());
+        currentDateTime.setHours(0);
+        currentDateTime.setMinutes(0)
+      }
+    }
+
     let complete = false;
 
     while (!complete) {
+      // Dont want to draw blocks outside of week
       if (currentDateTime.getDate() > getEndOfWeek().getDate()) {
         complete = true;
-      } else if (currentDateTime.getDate() != timeblock.endTime.getDate()) {
+      }
+      // Only want to draw on current day if on day view
+      else if (currentDateTime.getDate() != getDateFromURLParams().getDate() && view =="Day") {
+        complete = true;
+      } 
+      // If block does not end on current date draw up till midnight on this date
+      else if (currentDateTime.getDate() != timeblock.endTime.getDate()) {
+        let day = 0
+        if (view == "Week") {
+            day = currentDateTime.getDay()
+        }
+
         calendarBlocks.push(
           createBlock(
-            currentDateTime.getDay(),
+            day,
             currentDateTime.getHours(),
             currentDateTime.getMinutes(),
             23 - currentDateTime.getHours(),
@@ -101,10 +132,18 @@ export default function CalendarBlock({ timeblock }: props) {
         );
         currentDateTime.setDate(currentDateTime.getDate() + 1);
         currentDateTime.setHours(0, 0);
-      } else if (currentDateTime.getDate() == timeblock.endTime.getDate()) {
+      }
+      // If block does end on this date draw using given times 
+      else if (currentDateTime.getDate() == timeblock.endTime.getDate()) {
+
+        let day = 0
+        if (view == "Week") {
+            day = currentDateTime.getDay()
+        }
+
         calendarBlocks.push(
           createBlock(
-            currentDateTime.getDay(),
+            day,
             currentDateTime.getHours(),
             currentDateTime.getMinutes(),
             timeblock.endTime.getHours() - currentDateTime.getHours(),
@@ -184,7 +223,7 @@ export default function CalendarBlock({ timeblock }: props) {
       }}
     >
       {renderBlocks()}
-      <DialogContent>
+      <DialogContent className="p-8">
         {editMode ? (
           <>
             <DialogHeader>
@@ -220,15 +259,17 @@ export default function CalendarBlock({ timeblock }: props) {
             <DialogDescription>
               {timeblock.startTime.toLocaleDateString()}
             </DialogDescription>
-            <Button onClick={() => setEditMode(true)}>Edit</Button>
-            <Button
-              onClick={() => {
-                deleteMutation.mutate(timeblock);
-                setOpen(false);
-              }}
-            >
-              Delete
-            </Button>
+            <div className="flex flex-row justify-start gap-4">
+                <Button className="w-1/5" onClick={() => setEditMode(true)}>Edit</Button>
+                <Button className="w-1/5"
+                  onClick={() => {
+                    deleteMutation.mutate(timeblock);
+                    setOpen(false);
+                  }}
+                >
+                  Delete
+                </Button>
+            </div>
           </>
         )}
         <h1>{errorMessage}</h1>

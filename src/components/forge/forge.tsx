@@ -9,6 +9,7 @@ export default function Forge()  {
     const [message, setMessage] = useState("")
     const queryClient = useQueryClient();
 
+
     const mutation = useMutation({
         mutationFn: (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault()
@@ -29,6 +30,11 @@ export default function Forge()  {
                 Forge
                 <Anvil />
             </Button>
+            {mutation.isPending ? (
+                <>
+                    <p className="text-center">Forging Request...</p>
+                </>
+            ) : <></>}
         </form>
     )
 }
