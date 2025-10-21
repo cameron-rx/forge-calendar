@@ -5,7 +5,7 @@ public static class ForgeEndpoints
 {
     public static void MapForgeEndpoints(this WebApplication app)
     {
-        var group = app.MapGroup("/forge").RequireAuthorization();
+        var group = app.MapGroup("/api/forge").RequireAuthorization();
 
         group.MapPost("/", async (ForgeRequestDTO request, ITimeBlockService timeBlockService, ClaimsPrincipal user) =>
         {
@@ -22,7 +22,7 @@ public static class ForgeEndpoints
 
             Console.WriteLine(systemPrompt);
 
-            ChatClient client = new("gpt-4.1-mini", config["OPENAI_API_KEY"]);
+            ChatClient client = new("gpt-4.1-mini", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
 
             List<ChatMessage> messages = [new SystemChatMessage(systemPrompt), new UserChatMessage(request.Message)];
 
