@@ -7,4 +7,5 @@ public class IdentityDB : IdentityDbContext<IdentityUser>
     public IdentityDB(DbContextOptions<IdentityDB> options) : 
         base(options)
     { }
+    public DbSet<TimeBlock> Timeblocks { get; set; } = null!;
 }

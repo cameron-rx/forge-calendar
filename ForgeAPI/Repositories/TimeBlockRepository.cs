@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 
 public class TimeBlockRepository : ITimeBlockRespository
 {
-    private readonly ForgeDB Context;
+    private readonly IdentityDB Context;
 
-    public TimeBlockRepository(ForgeDB context)
+    public TimeBlockRepository(IdentityDB context)
     {
         Context = context;
     }
