@@ -1,6 +1,5 @@
 using System.Security.Claims;
 using System.Text.Json;
-using dotenv.net;
 using OpenAI.Chat;
 public static class ForgeEndpoints
 {
@@ -23,8 +22,7 @@ public static class ForgeEndpoints
 
             Console.WriteLine(systemPrompt);
 
-            DotEnv.Load();
-            ChatClient client = new("gpt-4.1-mini", Environment.GetEnvironmentVariable("OPENAI_API_KEY"));
+            ChatClient client = new("gpt-4.1-mini", config["OPENAI_API_KEY"]);
 
             List<ChatMessage> messages = [new SystemChatMessage(systemPrompt), new UserChatMessage(request.Message)];
 
