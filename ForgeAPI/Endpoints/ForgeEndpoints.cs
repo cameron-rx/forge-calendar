@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text.Json;
+using System;
 using OpenAI.Chat;
 public static class ForgeEndpoints
 {
