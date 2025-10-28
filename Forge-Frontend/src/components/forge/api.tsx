@@ -1,0 +1,25 @@
+export const forgeTimeblock = async (message: string) => {
+  const timeOffset = new Date().getTimezoneOffset();
+  const req = new Request(`/api/forge`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      Message: message,
+      TimeOffset: timeOffset,
+    }),
+  });
+
+  const response = await fetch(req, { credentials: "include" });
+
+  if (!response.ok) {
+    if (response.status == 409) {
+      throw new Error("There exsits a timeblock in this timespan already");
+    } else {
+      throw new Error("Network response was not ok");
+    }
+  }
+
+  return response.json();
+};
