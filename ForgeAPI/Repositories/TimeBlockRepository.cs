@@ -55,6 +55,6 @@ public class TimeBlockRepository : ITimeBlockRespository
 
     public async Task<bool> CheckConflictingBlocks(TimeBlock item)
     {
-        return await Context.Timeblocks.AnyAsync(t => t.StartTime < item.EndTime && item.StartTime < t.EndTime);
+        return await Context.Timeblocks.AnyAsync(t => t.StartTime < item.EndTime && item.StartTime < t.EndTime && t.Id != item.Id);
     }
 }
