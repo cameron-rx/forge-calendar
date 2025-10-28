@@ -1,5 +1,5 @@
 export const logout = async () => {
-    const req = new Request("http://localhost:5243/auth/logout",
+    const req = new Request(`/api/auth/logout`,
         {
             method: "POST",
         }
@@ -18,7 +18,7 @@ export const logout = async () => {
 }
 
 export const userInfo = async () => {
-    const req = new Request("http://localhost:5243/manage/info")
+    const req = new Request(`/api/manage/info`)
     
     const response = await fetch(req, {credentials: "include"}) 
 

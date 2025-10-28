@@ -1,20 +1,20 @@
 import { Timeblock } from "@/types/types";
 
+
 export const getTimeblocks = async () => {
-  const response = await fetch("http://localhost:5243/timeblock", {
+  const response = await fetch(`/api/timeblock`, {
     credentials: "include",
   });
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
+
   return response.json();
 };
 
 export const createTimeblock = async (t: Timeblock) => {
-  console.log(`Default: ${t.startTime.toTimeString()}`);
-  console.log(`Converted: ${t.startTime.toISOString()}`);
 
-  const req = new Request("http://localhost:5243/timeblock", {
+  const req = new Request(`/api/timeblock`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -41,7 +41,7 @@ export const createTimeblock = async (t: Timeblock) => {
 };
 
 export const updateTimeblock = async (t: Timeblock) => {
-  const req = new Request(`http://localhost:5243/timeblock/${t.id}`, {
+  const req = new Request(`/api/timeblock/${t.id}`, {
     method: "PATCH",
     headers: {
       "Content-Type": "application/json",
@@ -68,8 +68,7 @@ export const updateTimeblock = async (t: Timeblock) => {
 };
 
 export const deleteTimeblock = async (t: Timeblock) => {
-  console.log("Delete request");
-  const req = new Request(`http://localhost:5243/timeblock/${t.id}`, {
+  const req = new Request(`/api/timeblock/${t.id}`, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

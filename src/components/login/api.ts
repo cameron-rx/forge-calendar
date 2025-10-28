@@ -1,5 +1,5 @@
 export const register = async ({email, password}: {email:string, password:string}) => {
-    const req = new Request("http://localhost:5243/register",
+    const req = new Request(`/api/register`,
         {
             method: "POST",
             headers: {
@@ -27,7 +27,7 @@ export const register = async ({email, password}: {email:string, password:string
 }
 
 export const login = async ({email, password}: {email:string, password:string}) => {
-    const req = new Request("http://localhost:5243/login?useCookies=true&useSessionCookies=true",
+    const req = new Request(`/api/login?useCookies=true&useSessionCookies=true`,
         {
             method: "POST",
             headers: {

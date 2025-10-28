@@ -21,6 +21,7 @@ interface props {
 
 export default function CalendarBlock({ timeblock, view }: props) {
   const [errorMessage, setErrorMessage] = useState("");
+  (`Rendering block: ${timeblock.id}, view:${view}`);
 
   let offset = 0
   if (view === "Week") {
@@ -105,7 +106,7 @@ export default function CalendarBlock({ timeblock, view }: props) {
 
     while (!complete) {
       // Dont want to draw blocks outside of week
-      if (currentDateTime.getDate() > getEndOfWeek().getDate()) {
+      if (currentDateTime > getEndOfWeek()) {
         complete = true;
       }
       // Only want to draw on current day if on day view
@@ -165,9 +166,7 @@ export default function CalendarBlock({ timeblock, view }: props) {
     mutationFn: (t: Timeblock) => {
       return updateTimeblock(t);
     },
-    onSuccess: (data) => {
-      console.log("Updated timeblock");
-      console.log(data);
+    onSuccess: () => {
       setErrorMessage("");
       queryClient.invalidateQueries({ queryKey: ["timeblocks"] });
       setEditMode(false);
@@ -179,16 +178,13 @@ export default function CalendarBlock({ timeblock, view }: props) {
 
   const deleteMutation = useMutation({
     mutationFn: (t: Timeblock) => {
-      console.log("Starting delete mutation");
       return deleteTimeblock(t);
     },
-    onSuccess: (data) => {
-      console.log("Deleted timeblock");
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["timeblocks"],
         refetchType: "all",
       });
-      console.log(data);
     },
   });
 

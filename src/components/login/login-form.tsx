@@ -4,7 +4,7 @@ import { z } from "zod"
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { login } from "./api";
 import { useAuth } from "@/contexts/AuthContext";
 import { useNavigate } from "react-router";
@@ -28,7 +28,6 @@ export default function LoginForm() {
     const navigate = useNavigate()
 
     const tryLogin = async (values: z.infer<typeof formSchema>) => {
-        console.log("Attempting login")
         try {
             const success = await login({email: values.email, password: values.password})
             if (success) {

@@ -16,7 +16,6 @@ export default function Forge()  {
             return forgeTimeblock(message)
         },
         onSuccess: () => {
-            console.log("Timeblock forged")
             setMessage("")
             queryClient.invalidateQueries({ queryKey: ["timeblocks"] })
         }

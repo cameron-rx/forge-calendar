@@ -22,7 +22,7 @@ export function AuthProvider({ children }: props) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        fetch("http://localhost:5243/auth/me", {
+        fetch(`/api/auth/me`, {
             credentials: "include"
         }).then( (res) => {
             return res.json()
@@ -37,7 +37,7 @@ export function AuthProvider({ children }: props) {
     })
 
     const logout = () => {
-        fetch("http://localhost:5243/logout", {
+        fetch(`/api/auth/logout`, {
             method: 'POST',
             credentials: 'include',
           }).then(() => {

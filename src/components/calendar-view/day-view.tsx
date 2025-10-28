@@ -22,8 +22,6 @@ export default function DayView() {
           startTime: new Date(t.startTime),
           endTime: new Date(t.endTime),
         };
-        console.log(`Start ${block.startTime}`);
-        console.log(`End ${block.endTime}`);
         return block;
       })
       .filter((t: Timeblock) => {
@@ -75,7 +73,7 @@ export default function DayView() {
     }
   }
 
-  const { isPending, isError, data, error } = useQuery({
+  const { isPending, data } = useQuery({
     queryKey: ["timeblocks"],
     queryFn: getTimeblocks,
   });

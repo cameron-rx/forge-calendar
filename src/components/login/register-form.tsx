@@ -11,7 +11,7 @@ const aspNETPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z\d]).{6
 
 const formSchema = z.object({
     email: z.string().email(),
-    password: z.string().regex(aspNETPasswordRegex),
+    password: z.string().regex(aspNETPasswordRegex, "Password must contain at least one uppercase letter, one number, and one special character"),
     passwordRetype: z.string()
 }).refine((data) => data.password == data.passwordRetype, {
     path: ["passwordRetype"],

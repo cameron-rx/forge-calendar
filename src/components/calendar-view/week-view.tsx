@@ -44,7 +44,9 @@ export default function WeekView() {
   }
 
   function convertAndFilterTimeblocks(data: any) {
-    const timeblocks: Timeblock[] = data
+    let timeblocks: Timeblock[] = []
+    if (data) {
+      timeblocks = data
       .map((t: TimeblockResponseDTO) => {
         const block: Timeblock = {
           id: t.id,
@@ -53,8 +55,6 @@ export default function WeekView() {
           startTime: new Date(t.startTime),
           endTime: new Date(t.endTime),
         };
-        console.log(`Start ${block.startTime}`);
-        console.log(`End ${block.endTime}`);
         return block;
       })
       .filter((t: Timeblock) => {
@@ -74,6 +74,7 @@ export default function WeekView() {
         );
       });
 
+    }
     return timeblocks;
   }
 
@@ -105,7 +106,7 @@ export default function WeekView() {
     }
   }
 
-  const { isPending, isError, data, error } = useQuery({
+  const { isPending, data } = useQuery({
     queryKey: ["timeblocks"],
     queryFn: getTimeblocks,
   });

@@ -1,7 +1,6 @@
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -22,7 +21,6 @@ export default function CreateTimeblockButton() {
       return createTimeblock(t);
     },
     onSuccess: () => {
-      console.log("Timeblock added");
       queryClient.invalidateQueries({ queryKey: ["timeblocks"] });
       setErrorMessage("");
       setActive(false);

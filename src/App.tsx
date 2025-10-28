@@ -2,7 +2,7 @@ import { Navigate, Route} from "react-router";
 import { Routes } from "react-router";
 import Week from "./components/calendar-view/week";
 import Login from "./components/login/login";
-import { AuthProvider, useAuth } from "./contexts/AuthContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./routes/protected-route";
 
 
@@ -26,7 +26,7 @@ function App() {
       <AuthProvider>
         <Routes>
           
-          <Route path="login" element={<Login />} />
+          <Route index element={<Login />} />
 
           {/*Main App Route With Login Check */}
           <Route path="app" element={<ProtectedRoute />}>

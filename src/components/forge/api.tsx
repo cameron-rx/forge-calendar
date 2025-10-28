@@ -1,6 +1,6 @@
 export const forgeTimeblock = async (message: string) => {
   const timeOffset = new Date().getTimezoneOffset();
-  const req = new Request(`http://localhost:5243/forge`, {
+  const req = new Request(`/api/forge`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
