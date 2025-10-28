@@ -35,5 +35,7 @@ export function getEndOfWeek() {
 
   let date = currentDay.getDate() + (6 - dayOfWeek);
   let endOfWeek = new Date(currentDay.getFullYear(), currentDay.getMonth(), date);
+  endOfWeek.setHours(23);
+  endOfWeek.setMinutes(59);
   return endOfWeek;
 }
