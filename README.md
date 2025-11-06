@@ -11,9 +11,10 @@ language prompt instead and having an LLM create calendar events out this prompt
 ## Features
 ✅  User authentication  
 ✅  Simple calendar event crud interface  
-✅  LLM powered natural language event prompting  
+✅  LLM powered event creation  
+⏳ Multiple events from a single prompt  
 ⏳ Editing/Deleting current events with event prompting  
-⏳ Support for multiple LLM providers
+⏳ Support for multiple LLM providers  
 ⏳ Google Calendar Sync  
 
 ## Technologies Used
